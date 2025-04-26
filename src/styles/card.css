@@ -1,0 +1,23 @@
+@import "tailwindcss";
+:root {
+  --set-logo-reference-aspect-ratio: 2.5;
+}
+.card {
+  border: 1px solid black;
+  border-radius: 5px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  height: 200px;
+}
+
+.set-symbol {
+  max-height: 1.375rem;
+  width: auto;
+}
+.set-logo {
+  max-width: 100%;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain; /* optional, for better scaling */
+}

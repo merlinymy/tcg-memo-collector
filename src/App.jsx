@@ -10,7 +10,7 @@ function App() {
   const [page, setPage] = useState("starting");
   const [selectedSet, setSelectedSet] = useState({});
   const [collectedCards, setCollectedCards] = useState({});
-
+  console.log(collectedCards);
   switch (page) {
     case "starting":
       return <StartingPage setPage={setPage}></StartingPage>;
@@ -45,9 +45,8 @@ function App() {
         </GameSelect>
       );
     case "game":
-      console.log(selectedSet);
-      if (collectedCards[selectedSet] === undefined) {
-        setCollectedCards((prev) => ({ ...prev, [selectedSet]: [] }));
+      if (collectedCards[selectedSet.id] === undefined) {
+        setCollectedCards((prev) => ({ ...prev, [selectedSet.id]: [] }));
         return null; // wait until next render after state is ready
       }
       return (
@@ -55,6 +54,7 @@ function App() {
           setPage={setPage}
           selectedSet={selectedSet}
           collectedCards={collectedCards}
+          setCollectedCards={setCollectedCards}
         ></Game>
       );
     case "cards":

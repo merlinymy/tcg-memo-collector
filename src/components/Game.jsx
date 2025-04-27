@@ -1,38 +1,77 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Card } from "./Card";
 import { InGameCard } from "./InGameCard";
 import { getRandomElements } from "../utils";
 import { GameOver } from "./GameOver";
 import { Win } from "./Win";
 
-export function Game({ collectedCards, selectedSet, setPage }) {
+export function Game({
+  collectedCards,
+  selectedSet,
+  setPage,
+  setCollectedCards,
+}) {
   const [selectedCards, setSelectedCards] = useState([]);
   const [clickedCards, setClickedCards] = useState([]);
   const [gameState, setGameState] = useState("playing");
+  const [level, setLevel] = useState(4);
+
   useEffect(() => {
-    if (gameState === "over") {
+    if (gameState === "over" || gameState === "win") {
       return;
     }
-    const collectedCardsSet = new Set(collectedCards[selectedSet]);
+    const collectedCardsSet = new Set(collectedCards[selectedSet.id]);
 
     async function fetchCards() {
-      const url = `public/data/cards/${selectedSet.id}.json`;
+      const url = `data/cards/${selectedSet.id}.json`;
       const response = await fetch(url);
       const cards = await response.json();
-      const notCollected = cards.filter((card) => !collectedCardsSet.has(card));
-      const randomN = getRandomElements(notCollected, 2);
+      const notCollected = cards.filter(
+        (card) => !collectedCardsSet.has(card.id)
+      );
+      console.log(notCollected.length);
+      const randomN = getRandomElements(notCollected, level);
       setSelectedCards(randomN);
     }
     fetchCards();
-  }, [collectedCards, selectedSet, gameState]);
+  }, [collectedCards, selectedSet, gameState, level]);
+
+  // things to do when player win the round
+  useEffect(() => {
+    if (
+      clickedCards.length === selectedCards.length &&
+      selectedCards.length > 0
+    ) {
+      setGameState(() => "win");
+      setCollectedCards((prev) => ({
+        ...prev,
+        [selectedSet.id]: [
+          ...prev[selectedSet.id],
+          ...selectedCards.map((card) => card.id),
+        ],
+      }));
+    }
+  }, [clickedCards, selectedCards, selectedSet.id, setCollectedCards]);
 
   let popUpWindow;
   switch (gameState) {
     case "over":
-      popUpWindow = <GameOver setGameState={setGameState} setPage={setPage} />;
+      popUpWindow = (
+        <GameOver
+          setGameState={setGameState}
+          setPage={setPage}
+          setClickedCards={setClickedCards}
+        />
+      );
       break;
     case "win":
-      popUpWindow = <Win />;
+      popUpWindow = (
+        <Win
+          setGameState={setGameState}
+          setPage={setPage}
+          setClickedCards={setClickedCards}
+        />
+      );
       break;
     default:
       popUpWindow = null;
@@ -49,6 +88,7 @@ export function Game({ collectedCards, selectedSet, setPage }) {
           setClickedCards={setClickedCards}
           setGameState={setGameState}
           setSelectedCards={setSelectedCards}
+          gameState={gameState}
         ></InGameCard>
       ))}
     </div>

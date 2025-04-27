@@ -17,8 +17,8 @@ export function Collections({
       try {
         let url;
         type === "sets"
-          ? (url = "public/data/sets.json")
-          : (url = `public/data/cards/${set.id}.json`);
+          ? (url = "data/sets.json")
+          : (url = `data/cards/${set.id}.json`);
         const response = await fetch(url);
         const result = await response.json();
         setData(result);

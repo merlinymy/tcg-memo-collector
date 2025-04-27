@@ -6,6 +6,7 @@ export function InGameCard({
   setClickedCards,
   setSelectedCards,
   setGameState,
+  gameState,
 }) {
   const handleClick = function () {
     if (clickedCards.includes(card.id)) {
@@ -15,8 +16,16 @@ export function InGameCard({
 
     setSelectedCards((prev) => getRandomElements(prev, prev.length));
   };
+  const isDisabled = gameState === "win" || gameState === "over" ? true : false;
+  const disabledStyle = isDisabled
+    ? { pointerEvents: "none" }
+    : { cursor: "pointer" };
   return (
-    <div className="rounded-2xl p-3 overflow-hidden" onClick={handleClick}>
+    <div
+      style={disabledStyle}
+      className="rounded-2xl p-3 overflow-hidden"
+      onClick={handleClick}
+    >
       <img
         className="card-img"
         src={card.images.large}

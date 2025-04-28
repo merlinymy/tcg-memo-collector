@@ -8,6 +8,7 @@ export function Card({
   isInGame,
   collectedCards,
 }) {
+  // data is one set or one tcg card
   const openSet = (set) => {
     setSelectedSet(() => set);
 
@@ -18,24 +19,48 @@ export function Card({
     setSelectedSet(() => set);
     setPage(() => "game");
   };
+  const setLength = data.total;
+  const cards = collectedCards[data.id];
+  const cardsNum = cards ? cards.length : 0;
+  const percentageCollected = Math.floor((cardsNum / setLength) * 100);
+  const greyStyle = {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    filter: "grayscale(100%)",
+    clipPath: `inset(0 0 0 ${percentageCollected}%)`,
+    pointerEvents: "none",
+    width: "100%", // Important to maintain full coverage
+    height: "auto", // Keep aspect ratio
+  };
 
   if (isInGame) {
     // render sets click to Game component
+
     return (
       <div className="card p-3" onClick={() => gotoGamePage(data)}>
         <div className="flex items-center">
           <img className="set-symbol" src={data.images.symbol} alt="set logo" />
           <p className="text-2xl">{data.name}</p>
         </div>
-        <img
-          className="set-logo"
-          src={data.images.logo}
-          alt={`image for tcg set ${data.name}`}
-        />
+        <div className="image-container">
+          <img
+            className="set-logo"
+            src={data.images.logo}
+            alt={`image for tcg set ${data.name}`}
+          />
+          <img
+            className="set-logo grey-image"
+            src={data.images.logo}
+            alt={`image for tcg set ${data.name}`}
+            style={greyStyle}
+          />
+        </div>
+
         <p>
-          {collectedCards[data.id] ? collectedCards[data.id].length : 0} /{" "}
-          {data.total}
+          {cards ? cards.length : 0} / {setLength}
         </p>
+        <p>{percentageCollected}% collected</p>
       </div>
     );
   }
@@ -47,15 +72,23 @@ export function Card({
           <img className="set-symbol" src={data.images.symbol} alt="set logo" />
           <p className="text-2xl">{data.name}</p>
         </div>
-        <img
-          className="set-logo"
-          src={data.images.logo}
-          alt={`image for tcg set ${data.name}`}
-        />
+        <div className="image-container">
+          <img
+            className="set-logo"
+            src={data.images.logo}
+            alt={`image for tcg set ${data.name}`}
+          />
+          <img
+            className="set-logo grey-image"
+            src={data.images.logo}
+            alt={`image for tcg set ${data.name}`}
+            style={greyStyle}
+          />
+        </div>
         <p>
-          {collectedCards[data.id] ? collectedCards[data.id].length : 0} /{" "}
-          {data.total}
-        </p>{" "}
+          {cards ? cards.length : 0} / {setLength}
+        </p>
+        <p>{percentageCollected}% collected</p>
       </div>
     );
   } else {

@@ -21,3 +21,7 @@
   max-height: 100px;
   object-fit: contain; /* optional, for better scaling */
 }
+.image-container {
+  position: relative;
+  display: inline-block;
+}

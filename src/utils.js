@@ -54,7 +54,7 @@ export function distributeArray(N) {
 
   if (N < 9) return [N]; // smallest allowed piece = N itself
 
-  const base = [6, 8, 9, 10, 12, 14, 16];
+  const base = [6, 8, 10, 11, 12, 14, 16];
   const split = balancedSplit(N, base);
 
   if (split) {

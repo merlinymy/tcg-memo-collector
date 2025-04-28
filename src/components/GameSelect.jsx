@@ -7,6 +7,7 @@ export function GameSelect({
   set,
   collectedCards,
 }) {
+  console.log("render - select");
   return (
     <>
       {children}

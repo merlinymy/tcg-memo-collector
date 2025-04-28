@@ -13,14 +13,19 @@ export function FullCollection({ setPage, setGameState, setClickedCards }) {
     setPage("collections");
     setClickedCards([]);
   };
+  const backToSelection = () => {
+    setPage("gameSelect");
+    setClickedCards([]);
+  };
   return (
     <div className="win-popup">
       <p>You have 100% this set!</p>
-      <Button handleClick={backToMenu}>Menu</Button>
       <Button handleClick={goToCollection}>My Collection</Button>
       <Button disabled={true} handleClick={startEndless}>
         Endless mode
       </Button>
+      <Button handleClick={backToSelection}>Go Back</Button>
+      <Button handleClick={backToMenu}>Menu</Button>
     </div>
   );
 }

@@ -15,7 +15,7 @@ export function Game({
   const [selectedCards, setSelectedCards] = useState([]);
   const [clickedCards, setClickedCards] = useState([]);
   const [gameState, setGameState] = useState("playing");
-  const [level, setLevel] = useState(4);
+  const [level, setLevel] = useState(1);
   const [lengthOfSet, setLengthOfSet] = useState();
 
   useEffect(() => {

@@ -9,11 +9,16 @@ export function GameOver({ setPage, setGameState, setClickedCards }) {
     setGameState("playing");
     setClickedCards([]);
   };
+  const backToSelection = () => {
+    setPage("gameSelect");
+    setClickedCards([]);
+  };
   return (
     <div>
       <p>You lose, No cards collected</p>
-      <Button handleClick={backToMenu}>Menu</Button>
       <Button handleClick={playAgain}>Try Again</Button>
+      <Button handleClick={backToSelection}>Go Back</Button>
+      <Button handleClick={backToMenu}>Menu</Button>
     </div>
   );
 }

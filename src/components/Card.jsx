@@ -1,6 +1,4 @@
 import "../styles/card.css";
-import { Collections } from "./Collections";
-import { TopBar } from "./TopBar";
 export function Card({
   data,
   setPage,
@@ -8,6 +6,7 @@ export function Card({
   isInGame,
   collectedCards,
   prevSetPrecent,
+  page,
 }) {
   // data is one set or one tcg card
   const openSet = (set) => {
@@ -130,7 +129,11 @@ export function Card({
   } else {
     //render cards
     return (
-      <div className="rounded-2xl p-3 overflow-hidden">
+      <div
+        className={`rounded-[5px] overflow-hidden${
+          page !== "cards" ? " p-3" : ""
+        }`}
+      >
         <img
           className="card-img"
           src={data.images.large}

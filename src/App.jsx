@@ -31,6 +31,7 @@ function App() {
           set={selectedSet}
           isInCollection={true}
           collectedCards={collectedCards}
+          page={page}
         >
           <TopBar
             setPage={setPage}
@@ -76,6 +77,7 @@ function App() {
           setSelectedSet={setSelectedSet}
           isInCollection={true}
           collectedCards={collectedCards}
+          page={page}
         >
           <TopBar
             prevPage={"collections"}

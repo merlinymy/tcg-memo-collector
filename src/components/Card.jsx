@@ -1,7 +1,13 @@
 import "../styles/card.css";
 import { Collections } from "./Collections";
 import { TopBar } from "./TopBar";
-export function Card({ data, setPage, setSelectedSet, isInGame }) {
+export function Card({
+  data,
+  setPage,
+  setSelectedSet,
+  isInGame,
+  collectedCards,
+}) {
   const openSet = (set) => {
     setSelectedSet(() => set);
 
@@ -26,7 +32,10 @@ export function Card({ data, setPage, setSelectedSet, isInGame }) {
           src={data.images.logo}
           alt={`image for tcg set ${data.name}`}
         />
-        <p>0 / {data.total}</p>
+        <p>
+          {collectedCards[data.id] ? collectedCards[data.id].length : 0} /{" "}
+          {data.total}
+        </p>
       </div>
     );
   }
@@ -43,7 +52,10 @@ export function Card({ data, setPage, setSelectedSet, isInGame }) {
           src={data.images.logo}
           alt={`image for tcg set ${data.name}`}
         />
-        <p>0 / {data.total}</p>
+        <p>
+          {collectedCards[data.id] ? collectedCards[data.id].length : 0} /{" "}
+          {data.total}
+        </p>{" "}
       </div>
     );
   } else {

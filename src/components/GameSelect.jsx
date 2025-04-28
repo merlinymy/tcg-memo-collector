@@ -1,6 +1,12 @@
 import { Collections } from "./Collections";
 
-export function GameSelect({ children, setPage, setSelectedSet, set }) {
+export function GameSelect({
+  children,
+  setPage,
+  setSelectedSet,
+  set,
+  collectedCards,
+}) {
   return (
     <>
       {children}
@@ -11,6 +17,7 @@ export function GameSelect({ children, setPage, setSelectedSet, set }) {
         isInCollection={false}
         setSelectedSet={setSelectedSet}
         set={set}
+        collectedCards={collectedCards}
       ></Collections>
     </>
   );

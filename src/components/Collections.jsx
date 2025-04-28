@@ -9,6 +9,7 @@ export function Collections({
   setSelectedSet,
   set,
   isInCollection,
+  collectedCards,
 }) {
   const [data, setData] = useState([]);
 
@@ -40,6 +41,7 @@ export function Collections({
               setPage={setPage}
               setSelectedSet={setSelectedSet}
               isInGame={false}
+              collectedCards={collectedCards}
             ></Card>
           );
         })}
@@ -58,6 +60,7 @@ export function Collections({
               setPage={setPage}
               setSelectedSet={setSelectedSet}
               isInGame={true}
+              collectedCards={collectedCards}
             ></Card>
           );
         })}

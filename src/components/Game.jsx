@@ -15,7 +15,7 @@ export function Game({
   const [selectedCards, setSelectedCards] = useState([]);
   const [clickedCards, setClickedCards] = useState([]);
   const [gameState, setGameState] = useState("playing");
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(8);
   const [lengthOfSet, setLengthOfSet] = useState();
 
   useEffect(() => {
@@ -102,19 +102,23 @@ export function Game({
   }
 
   return (
-    <div className="grid grid-cols-2">
+    <div className="game-wrap">
       {popUpWindow}
-      {selectedCards.map((card) => (
-        <InGameCard
-          key={card.id}
-          card={card}
-          clickedCards={clickedCards}
-          setClickedCards={setClickedCards}
-          setGameState={setGameState}
-          setSelectedCards={setSelectedCards}
-          gameState={gameState}
-        ></InGameCard>
-      ))}
+      <p className="text-center">{selectedSet.name} - level 1</p>
+      <p className="text-center">Score: {clickedCards.length}</p>
+      <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
+        {selectedCards.map((card) => (
+          <InGameCard
+            key={card.id}
+            card={card}
+            clickedCards={clickedCards}
+            setClickedCards={setClickedCards}
+            setGameState={setGameState}
+            setSelectedCards={setSelectedCards}
+            gameState={gameState}
+          ></InGameCard>
+        ))}
+      </div>
     </div>
   );
 }

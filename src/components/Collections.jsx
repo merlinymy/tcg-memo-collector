@@ -70,7 +70,7 @@ export function Collections({
       </div>
     )
   ) : (
-    <div className="level-selection">
+    <div className="level-selection relative">
       {children}
       <p>In level selection</p>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 m-2">

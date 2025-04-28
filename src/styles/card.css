@@ -25,3 +25,7 @@
   position: relative;
   display: inline-block;
 }
+.card-img {
+  width: 100%;
+  max-width: 250px;
+}

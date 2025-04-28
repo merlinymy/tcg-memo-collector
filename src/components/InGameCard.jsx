@@ -23,7 +23,7 @@ export function InGameCard({
   return (
     <div
       style={disabledStyle}
-      className="rounded-2xl p-3 overflow-hidden"
+      className="rounded-[5px] overflow-hidden m-1.5"
       onClick={handleClick}
     >
       <img

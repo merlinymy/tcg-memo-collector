@@ -7,6 +7,7 @@ export function Card({
   setSelectedSet,
   isInGame,
   collectedCards,
+  prevSetPrecent,
 }) {
   // data is one set or one tcg card
   const openSet = (set) => {
@@ -36,9 +37,44 @@ export function Card({
 
   if (isInGame) {
     // render sets click to Game component
-
+    if (percentageCollected <= 0 && prevSetPrecent < 75) {
+      return (
+        <div
+          className="card p-3 cursor-default pointer-events-none relative bg-[#6d6d6d]"
+          onClick={() => gotoGamePage(data)}
+        >
+          <div className="flex items-center">
+            <img
+              className="set-symbol"
+              src={data.images.symbol}
+              alt="set logo"
+            />
+            <p className="text-2xl">{data.name}</p>
+          </div>
+          <div className="image-container">
+            <img
+              className="set-logo"
+              src={data.images.logo}
+              alt={`image for tcg set ${data.name}`}
+            />
+            <img
+              className="set-logo grey-image"
+              src={data.images.logo}
+              alt={`image for tcg set ${data.name}`}
+              style={greyStyle}
+            />
+          </div>
+          <p className="text-[white] bg-[black]/75 absolute top-10 z-10 text-2xl text-center">
+            Collect 75% of previous set to Unlock
+          </p>
+        </div>
+      );
+    }
     return (
-      <div className="card p-3" onClick={() => gotoGamePage(data)}>
+      <div
+        className="card p-3 cursor-pointer"
+        onClick={() => gotoGamePage(data)}
+      >
         <div className="flex items-center">
           <img className="set-symbol" src={data.images.symbol} alt="set logo" />
           <p className="text-2xl">{data.name}</p>

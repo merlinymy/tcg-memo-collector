@@ -9,7 +9,7 @@ export function GameSelect({
 }) {
   console.log("render - select");
   return (
-    <>
+    <div className="level-wrap relative">
       {children}
       <p>Select a set</p>
       <Collections
@@ -20,6 +20,6 @@ export function GameSelect({
         set={set}
         collectedCards={collectedCards}
       ></Collections>
-    </>
+    </div>
   );
 }

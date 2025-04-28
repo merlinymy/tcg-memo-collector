@@ -4,6 +4,7 @@ import { InGameCard } from "./InGameCard";
 import { getRandomElements } from "../utils";
 import { GameOver } from "./GameOver";
 import { Win } from "./Win";
+import { FullCollection } from "./FullCollection";
 
 export function Game({
   collectedCards,
@@ -15,9 +16,10 @@ export function Game({
   const [clickedCards, setClickedCards] = useState([]);
   const [gameState, setGameState] = useState("playing");
   const [level, setLevel] = useState(4);
+  const [lengthOfSet, setLengthOfSet] = useState();
 
   useEffect(() => {
-    if (gameState === "over" || gameState === "win") {
+    if (gameState !== "playing") {
       return;
     }
     const collectedCardsSet = new Set(collectedCards[selectedSet.id]);
@@ -32,6 +34,7 @@ export function Game({
       console.log(notCollected.length);
       const randomN = getRandomElements(notCollected, level);
       setSelectedCards(randomN);
+      setLengthOfSet(() => cards.length);
     }
     fetchCards();
   }, [collectedCards, selectedSet, gameState, level]);
@@ -42,7 +45,9 @@ export function Game({
       clickedCards.length === selectedCards.length &&
       selectedCards.length > 0
     ) {
-      setGameState(() => "win");
+      //   setGameState(() => "win");
+      // debug
+      setGameState(() => "setCollected");
       setCollectedCards((prev) => ({
         ...prev,
         [selectedSet.id]: [
@@ -51,7 +56,13 @@ export function Game({
         ],
       }));
     }
-  }, [clickedCards, selectedCards, selectedSet.id, setCollectedCards]);
+  }, [clickedCards, selectedCards, selectedSet, setCollectedCards]);
+
+  useEffect(() => {
+    if (collectedCards[selectedSet.id].length === lengthOfSet) {
+      setGameState("setCollected");
+    }
+  }, [collectedCards, lengthOfSet, selectedSet]);
 
   let popUpWindow;
   switch (gameState) {
@@ -71,6 +82,15 @@ export function Game({
           setPage={setPage}
           setClickedCards={setClickedCards}
         />
+      );
+      break;
+    case "setCollected":
+      popUpWindow = (
+        <FullCollection
+          setGameState={setGameState}
+          setPage={setPage}
+          setClickedCards={setClickedCards}
+        ></FullCollection>
       );
       break;
     default:

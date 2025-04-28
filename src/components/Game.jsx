@@ -1,7 +1,10 @@
-import { use, useEffect, useState } from "react";
-import { Card } from "./Card";
+import { useEffect, useState } from "react";
 import { InGameCard } from "./InGameCard";
-import { getRandomElements } from "../utils";
+import {
+  getRandomElements,
+  distributeArray,
+  getOrInitializeLocalStorage,
+} from "../utils";
 import { GameOver } from "./GameOver";
 import { Win } from "./Win";
 import { FullCollection } from "./FullCollection";
@@ -12,31 +15,50 @@ export function Game({
   setPage,
   setCollectedCards,
 }) {
+  const localGameInfo = getOrInitializeLocalStorage("tcg-memo-gameInfo", {});
   const [selectedCards, setSelectedCards] = useState([]);
   const [clickedCards, setClickedCards] = useState([]);
   const [gameState, setGameState] = useState("playing");
-  const [level, setLevel] = useState(8);
   const [lengthOfSet, setLengthOfSet] = useState();
+  const [gameInfo, setGameInfo] = useState(localGameInfo);
+  //gameInfo
+
+  const curLevel = gameInfo.selectedSetId?.curLevel ?? 0;
+  const selectedSetId = selectedSet.id;
 
   useEffect(() => {
     if (gameState !== "playing") {
       return;
     }
-    const collectedCardsSet = new Set(collectedCards[selectedSet.id]);
 
     async function fetchCards() {
-      const url = `data/cards/${selectedSet.id}.json`;
+      const collectedCardsSet = new Set(collectedCards[selectedSetId]);
+
+      const url = `data/cards/${selectedSetId}.json`;
       const response = await fetch(url);
       const cards = await response.json();
       const notCollected = cards.filter(
         (card) => !collectedCardsSet.has(card.id)
       );
-      const randomN = getRandomElements(notCollected, level);
+      const levelDistribution = distributeArray(cards.length);
+
+      const randomN = getRandomElements(
+        notCollected,
+        levelDistribution[curLevel]
+      );
       setSelectedCards(randomN);
       setLengthOfSet(() => cards.length);
+      setGameInfo((prev) => ({
+        ...prev,
+        selectedSetId: {
+          ...prev.selectedSetId,
+          distribution: levelDistribution,
+          curLevel: curLevel,
+        },
+      }));
     }
     fetchCards();
-  }, [collectedCards, selectedSet, gameState, level]);
+  }, [collectedCards, gameState, curLevel, selectedSetId]);
 
   // things to do when player win the round
   useEffect(() => {
@@ -52,6 +74,13 @@ export function Game({
           ...selectedCards.map((card) => card.id),
         ],
       }));
+      setGameInfo((prev) => ({
+        ...prev,
+        selectedSetId: {
+          ...prev.selectedSetId,
+          curLevel: prev.selectedSetId.curLevel + 1,
+        },
+      }));
     }
   }, [clickedCards, selectedCards, selectedSet, setCollectedCards]);
 
@@ -61,6 +90,9 @@ export function Game({
       JSON.stringify(collectedCards)
     );
   }, [collectedCards]);
+  useEffect(() => {
+    localStorage.setItem("tcg-memo-gameInfo", JSON.stringify(gameInfo));
+  }, [gameInfo]);
 
   useEffect(() => {
     if (collectedCards[selectedSet.id].length === lengthOfSet) {
@@ -104,8 +136,19 @@ export function Game({
   return (
     <div className="game-wrap">
       {popUpWindow}
-      <p className="text-center">{selectedSet.name} - level 1</p>
-      <p className="text-center">Score: {clickedCards.length}</p>
+      {gameState === "playing" && (
+        <p className="text-center">
+          {selectedSet.name} - level {gameInfo.selectedSetId?.curLevel + 1}
+        </p>
+      )}
+      {gameState === "playing" && (
+        <p className="text-center">
+          Cards remaining:{" "}
+          {gameInfo.selectedSetId?.distribution[
+            gameInfo.selectedSetId?.curLevel
+          ] - clickedCards.length}
+        </p>
+      )}
       <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
         {selectedCards.map((card) => (
           <InGameCard

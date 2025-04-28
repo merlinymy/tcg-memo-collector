@@ -1,4 +1,5 @@
 import "../styles/card.css";
+import tcg_back from "../assets/img/tcg_back.png";
 export function Card({
   data,
   setPage,
@@ -7,15 +8,18 @@ export function Card({
   collectedCards,
   prevSetPrecent,
   page,
+  selectedSet,
+  setLoading,
 }) {
   // data is one set or one tcg card
   const openSet = (set) => {
-    setSelectedSet(() => set);
-
+    setLoading(() => true);
     setPage(() => "cards");
+    setSelectedSet(() => set);
   };
 
   const gotoGamePage = (set) => {
+    setLoading(true);
     setSelectedSet(() => set);
     setPage(() => "game");
   };
@@ -134,11 +138,24 @@ export function Card({
           page !== "cards" ? " p-3" : ""
         }`}
       >
-        <img
-          className="card-img"
-          src={data.images.large}
-          alt={`image for tcg card ${data.name}`}
-        />
+        {collectedCards[selectedSet.id].includes(data.id) ? (
+          <img
+            className="card-img rounded-[5px]"
+            src={data.images.large}
+            alt={`image for tcg card ${data.name}`}
+          />
+        ) : (
+          <div className="empty-card bg-[#feffff] h-[100%] relative inset-shadow-sm inset-shadow-[grey]">
+            <img
+              className="card-img opacity-0"
+              src={tcg_back}
+              alt={`image for tcg card ${data.name}`}
+            />
+            <p className="text-[#a4a4a4] text-5xl absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+              {data.number}
+            </p>
+          </div>
+        )}
       </div>
     );
   }

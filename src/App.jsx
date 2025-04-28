@@ -7,10 +7,18 @@ import { TopBar } from "./components/TopBar";
 import { Game } from "./components/Game";
 
 function App() {
+  const localCollectedCards = JSON.parse(
+    localStorage.getItem("tcg-memo-collectedCards")
+  );
+  if (!localCollectedCards) {
+    localStorage.setItem("tcg-memo-collectedCards", JSON.stringify({}));
+  }
   const [page, setPage] = useState("starting");
   const [selectedSet, setSelectedSet] = useState({});
-  const [collectedCards, setCollectedCards] = useState({});
-  console.log(collectedCards);
+  const [collectedCards, setCollectedCards] = useState(() => {
+    return JSON.parse(localStorage.getItem("tcg-memo-collectedCards"));
+  });
+
   switch (page) {
     case "starting":
       return <StartingPage setPage={setPage}></StartingPage>;

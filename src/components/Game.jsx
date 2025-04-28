@@ -56,6 +56,13 @@ export function Game({
   }, [clickedCards, selectedCards, selectedSet, setCollectedCards]);
 
   useEffect(() => {
+    localStorage.setItem(
+      "tcg-memo-collectedCards",
+      JSON.stringify(collectedCards)
+    );
+  }, [collectedCards]);
+
+  useEffect(() => {
     if (collectedCards[selectedSet.id].length === lengthOfSet) {
       setGameState("setCollected");
     }

@@ -10,6 +10,7 @@ function App() {
   const [page, setPage] = useState("starting");
   const [selectedSet, setSelectedSet] = useState({});
   const [collectedCards, setCollectedCards] = useState({});
+  console.log(collectedCards);
   switch (page) {
     case "starting":
       return <StartingPage setPage={setPage}></StartingPage>;
@@ -66,6 +67,7 @@ function App() {
           setPage={setPage}
           setSelectedSet={setSelectedSet}
           isInCollection={true}
+          collectedCards={collectedCards}
         >
           <TopBar
             prevPage={"collections"}

@@ -31,7 +31,6 @@ export function Game({
       const notCollected = cards.filter(
         (card) => !collectedCardsSet.has(card.id)
       );
-      console.log(notCollected.length);
       const randomN = getRandomElements(notCollected, level);
       setSelectedCards(randomN);
       setLengthOfSet(() => cards.length);
@@ -45,9 +44,7 @@ export function Game({
       clickedCards.length === selectedCards.length &&
       selectedCards.length > 0
     ) {
-      //   setGameState(() => "win");
-      // debug
-      setGameState(() => "setCollected");
+      setGameState(() => "win");
       setCollectedCards((prev) => ({
         ...prev,
         [selectedSet.id]: [

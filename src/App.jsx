@@ -8,6 +8,7 @@ import { TopBar } from "./components/TopBar";
 import { Game } from "./components/Game";
 import { getOrInitializeLocalStorage } from "./utils";
 import { EntryPage } from "./components/EntryPage";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 /* ─────────────────────────────────────────────────────────── */
 
@@ -108,23 +109,23 @@ function App() {
 
     // if the user changes page again mid-fade, stop the current timer
     return () => clearInterval(fadeOut);
-  }, [page, gameTrackIdx]); // runs whenever page or battle track index changes
+  }, [page, gameTrackIdx, battleTracks, isIOS]); // runs whenever page or battle track index changes
 
-  /* ---------- routing ---------- */
+  let component;
   switch (page) {
     case "entry":
-      return (
+      component = (
         <EntryPage
           setPage={setPage}
           musicRef={musicRef} // creates + unlocks <audio> on first tap
         />
       );
-
+      break;
     case "starting":
-      return <StartingPage setPage={setPage} />;
-
+      component = <StartingPage setPage={setPage} />;
+      break;
     case "collections":
-      return (
+      component = (
         <Collections
           type="sets"
           setPage={setPage}
@@ -141,9 +142,9 @@ function App() {
           />
         </Collections>
       );
-
+      break;
     case "gameSelect":
-      return (
+      component = (
         <GameSelect
           setPage={setPage}
           setSelectedSet={setSelectedSet}
@@ -153,14 +154,14 @@ function App() {
           <TopBar setPage={setPage} prevPage="starting" isInGameSelect={true} />
         </GameSelect>
       );
-
+      break;
     case "game":
       // ensure an array exists for this set before rendering <Game>
       if (collectedCards[selectedSet.id] === undefined) {
         setCollectedCards((prev) => ({ ...prev, [selectedSet.id]: [] }));
         return null; // render nothing this tick
       }
-      return (
+      component = (
         <Game
           setPage={setPage}
           selectedSet={selectedSet}
@@ -171,9 +172,9 @@ function App() {
           }
         />
       );
-
+      break;
     case "cards":
-      return (
+      component = (
         <Collections
           type="cards"
           set={selectedSet}
@@ -186,10 +187,16 @@ function App() {
           <TopBar prevPage="collections" setPage={setPage} />
         </Collections>
       );
-
+      break;
     default:
       return null;
   }
+  return (
+    <div>
+      {component}
+      <SpeedInsights />
+    </div>
+  );
 }
 
 export default App;

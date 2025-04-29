@@ -13,7 +13,7 @@ export function EntryPage({ musicRef, setPage }) {
   };
 
   return (
-    <div className="h-[100dvh] w-[100dvw]" onClick={start}>
+    <div className="flex items-center justify-center h-[100dvh] w-[100dvw]" onClick={start}>
       <p>click anywhere to start</p>
     </div>
   );

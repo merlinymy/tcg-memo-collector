@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import "./App.css";
 import { Collections } from "./components/Collections";
 import { StartingPage } from "./components/StartingPage";
@@ -7,6 +7,7 @@ import { TopBar } from "./components/TopBar";
 import { Game } from "./components/Game";
 import { getOrInitializeLocalStorage } from "./utils";
 import { EntryPage } from "./components/EntryPage";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   const localCollectedCards = getOrInitializeLocalStorage(
@@ -30,7 +31,7 @@ function App() {
   const [gameTrackIdx, setGameTrackIdx] = useState(() =>
     Math.floor(Math.random() * battleTracks.length)
   );
-  useEffect(() => {
+  useLayoutEffect(() => {
     const audio = musicRef.current;
     audio.loop = true;
     let musicSrc = "";
@@ -78,13 +79,17 @@ function App() {
     }, interval);
   }, [page, battleTracks, gameTrackIdx]);
 
+  let component;
+
   switch (page) {
     case "entry":
-      return <EntryPage setPage={setPage} musicRef={musicRef}></EntryPage>;
+      component = <EntryPage setPage={setPage} musicRef={musicRef}></EntryPage>;
+      break;
     case "starting":
-      return <StartingPage setPage={setPage}></StartingPage>;
+      component = <StartingPage setPage={setPage}></StartingPage>;
+      break;
     case "collections":
-      return (
+      component = (
         <Collections
           type={"sets"}
           setPage={setPage}
@@ -101,8 +106,9 @@ function App() {
           ></TopBar>
         </Collections>
       );
+      break;
     case "gameSelect":
-      return (
+      component = (
         <GameSelect
           setPage={setPage}
           setSelectedSet={setSelectedSet}
@@ -116,12 +122,13 @@ function App() {
           ></TopBar>
         </GameSelect>
       );
+      break;
     case "game":
       if (collectedCards[selectedSet.id] === undefined) {
         setCollectedCards((prev) => ({ ...prev, [selectedSet.id]: [] }));
         return null; // wait until next render after state is ready
       }
-      return (
+      component = (
         <Game
           setPage={setPage}
           selectedSet={selectedSet}
@@ -132,8 +139,9 @@ function App() {
           }
         ></Game>
       );
+      break;
     case "cards":
-      return (
+      component = (
         <Collections
           type={"cards"}
           set={selectedSet}
@@ -150,7 +158,14 @@ function App() {
           ></TopBar>
         </Collections>
       );
+      break;
   }
+  return (
+    <div>
+      {component}
+      <SpeedInsights />
+    </div>
+  );
 }
 
 export default App;

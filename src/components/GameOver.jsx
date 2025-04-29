@@ -20,7 +20,11 @@ export function GameOver({
     setClickedCards([]);
   };
   const backToSelection = () => {
-    setPage("gameSelect");
+    if (isInEndless) {
+      setGameState("endless-over");
+    } else {
+      setPage(() => "gameSelect");
+    }
     setClickedCards([]);
   };
   return (

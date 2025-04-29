@@ -1,6 +1,12 @@
 import { Button } from "./Button";
 
-export function Win({ setPage, setGameState, setClickedCards, isInEndless }) {
+export function Win({
+  setPage,
+  setGameState,
+  setClickedCards,
+  isInEndless,
+  gameInfo,
+}) {
   const backToMenu = () => {
     setPage("starting");
     setClickedCards([]);
@@ -26,7 +32,10 @@ export function Win({ setPage, setGameState, setClickedCards, isInEndless }) {
         <p>You collected all the cards from this round!</p>
       )}
       <Button handleClick={playAgain}>Next round</Button>
-      <Button handleClick={backToSelection}>Go Back</Button>
+      <Button handleClick={backToSelection}>
+        {" "}
+        {gameInfo.endlessScore > 0 ? "Save & Go Back" : "Go Back"}
+      </Button>
       <Button handleClick={backToMenu}>Menu</Button>
     </div>
   );

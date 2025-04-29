@@ -147,6 +147,19 @@ export function Game({
       }
       fetchCards();
     }
+    if (gameState === "endless-over") {
+      setGameInfo((prev) => ({
+        ...prev,
+        [selectedSetId]: {
+          ...prev[selectedSetId],
+          endlessRound: 1,
+          endlessScore: 0,
+        },
+      }));
+      setTimeout(() => {
+        setPage(() => "gameSelect");
+      }, 10);
+    }
     if (gameState === "endless") {
       console.log("in endless");
       async function fetchCards() {
@@ -169,19 +182,26 @@ export function Game({
       }
       fetchCards();
     }
-  }, [gameState, endlessLevel, selectedSetId, endlessHighScore, endlessScore]);
+  }, [
+    gameState,
+    endlessLevel,
+    selectedSetId,
+    endlessHighScore,
+    endlessScore,
+    setPage,
+  ]);
 
   // for 100% a set
   useEffect(() => {
     if (collectedCards[selectedSet.id].length === lengthOfSet) {
       setGameState("setCollected");
-      setGameInfo((prev) => ({
-        ...prev,
-        [selectedSetId]: {
-          ...prev[selectedSetId],
-          endlessRound: 1,
-        },
-      }));
+      //   setGameInfo((prev) => ({
+      //     ...prev,
+      //     [selectedSetId]: {
+      //       ...prev[selectedSetId],
+      //       endlessRound: 1,
+      //     },
+      //   }));
     }
   }, [collectedCards, lengthOfSet, selectedSet, selectedSetId]);
 
@@ -207,6 +227,7 @@ export function Game({
           setPage={setPage}
           setClickedCards={setClickedCards}
           isInEndless={isInEndless}
+          gameInfo={gameInfo[selectedSetId]}
         />
       );
       break;
@@ -216,7 +237,7 @@ export function Game({
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
-          //   setGameInfo={setGameInfo}
+          gameInfo={gameInfo[selectedSetId]}
         ></FullCollection>
       );
       break;

@@ -7,7 +7,6 @@ import { TopBar } from "./components/TopBar";
 import { Game } from "./components/Game";
 import { getOrInitializeLocalStorage } from "./utils";
 import { EntryPage } from "./components/EntryPage";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function App() {
   const localCollectedCards = getOrInitializeLocalStorage(
@@ -79,17 +78,13 @@ function App() {
     }, interval);
   }, [page, battleTracks, gameTrackIdx]);
 
-  let component;
-
   switch (page) {
     case "entry":
-      component = <EntryPage setPage={setPage} musicRef={musicRef}></EntryPage>;
-      break;
+      return <EntryPage setPage={setPage} musicRef={musicRef}></EntryPage>;
     case "starting":
-      component = <StartingPage setPage={setPage}></StartingPage>;
-      break;
+      return <StartingPage setPage={setPage}></StartingPage>;
     case "collections":
-      component = (
+      return (
         <Collections
           type={"sets"}
           setPage={setPage}
@@ -106,9 +101,8 @@ function App() {
           ></TopBar>
         </Collections>
       );
-      break;
     case "gameSelect":
-      component = (
+      return (
         <GameSelect
           setPage={setPage}
           setSelectedSet={setSelectedSet}
@@ -122,13 +116,12 @@ function App() {
           ></TopBar>
         </GameSelect>
       );
-      break;
     case "game":
       if (collectedCards[selectedSet.id] === undefined) {
         setCollectedCards((prev) => ({ ...prev, [selectedSet.id]: [] }));
         return null; // wait until next render after state is ready
       }
-      component = (
+      return (
         <Game
           setPage={setPage}
           selectedSet={selectedSet}
@@ -139,9 +132,8 @@ function App() {
           }
         ></Game>
       );
-      break;
     case "cards":
-      component = (
+      return (
         <Collections
           type={"cards"}
           set={selectedSet}
@@ -158,14 +150,7 @@ function App() {
           ></TopBar>
         </Collections>
       );
-      break;
   }
-  return (
-    <div>
-      {component}
-      <SpeedInsights />
-    </div>
-  );
 }
 
 export default App;

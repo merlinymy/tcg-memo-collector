@@ -20,8 +20,16 @@ function App() {
     () => localCollectedCards
   );
 
-  const musicRef = useRef(new Audio());
+  const battleTracks = [
+    "music/battleNormal.mp3",
+    "music/battlePinch.mp3",
+    "music/battleChance.mp3",
+  ];
 
+  const musicRef = useRef(new Audio());
+  const [gameTrackIdx, setGameTrackIdx] = useState(() =>
+    Math.floor(Math.random() * battleTracks.length)
+  );
   useEffect(() => {
     const audio = musicRef.current;
     audio.loop = true;
@@ -31,10 +39,13 @@ function App() {
         musicSrc = "/music/pocketMenu.mp3";
         break;
       case "gameSelect":
-        musicSrc = "/music/game-select.mp3";
+        musicSrc = "/music/battleMenu.mp3";
         break;
       case "collections":
         musicSrc = "/music/collection.mp3";
+        break;
+      case "game":
+        musicSrc = battleTracks[gameTrackIdx];
         break;
       default:
         musicSrc = "";
@@ -65,7 +76,7 @@ function App() {
           .catch((e) => console.log("Autoplay blocked:", e));
       }
     }, interval);
-  }, [page]);
+  }, [page, battleTracks, gameTrackIdx]);
 
   switch (page) {
     case "entry":
@@ -116,6 +127,9 @@ function App() {
           selectedSet={selectedSet}
           collectedCards={collectedCards}
           setCollectedCards={setCollectedCards}
+          randomizeMusic={() =>
+            setGameTrackIdx(Math.floor(Math.random() * battleTracks.length))
+          }
         ></Game>
       );
     case "cards":

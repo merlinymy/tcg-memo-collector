@@ -15,6 +15,7 @@ export function Game({
   selectedSet,
   setPage,
   setCollectedCards,
+  randomizeMusic,
 }) {
   const localGameInfo = getOrInitializeLocalStorage("tcg-memo-gameInfo", {});
   const [selectedCards, setSelectedCards] = useState([]);
@@ -33,7 +34,7 @@ export function Game({
     if (gameState !== "playing") {
       return;
     }
-
+    randomizeMusic();
     async function fetchCards() {
       const collectedCardsSet = new Set(collectedCards[selectedSetId]);
 

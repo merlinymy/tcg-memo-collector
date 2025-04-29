@@ -106,7 +106,7 @@ export function Card({
   if (data.total) {
     // render sets
     return (
-      <div className="card p-3" onClick={() => openSet(data)}>
+      <div className="card p-3 cursor-pointer" onClick={() => openSet(data)}>
         <div className="flex items-center">
           <img className="set-symbol" src={data.images.symbol} alt="set logo" />
           <p className="text-2xl">{data.name}</p>
@@ -134,11 +134,11 @@ export function Card({
     //render cards
     return (
       <div
-        className={`rounded-[5px] overflow-hidden${
+        className={`rounded-[5px] overflow-hidden cursor-pointer${
           page !== "cards" ? " p-3" : ""
         }`}
       >
-        {collectedCards[selectedSet.id].includes(data.id) ? (
+        {collectedCards[selectedSet.id]?.includes(data.id) ? (
           <img
             className="card-img rounded-[5px]"
             src={data.images.large}

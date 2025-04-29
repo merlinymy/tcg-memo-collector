@@ -11,10 +11,11 @@ export function InGameCard({
   const handleClick = function () {
     if (clickedCards.includes(card.id)) {
       setGameState("over");
-    }
-    setClickedCards((prev) => [...prev, card.id]);
+    } else {
+      setClickedCards((prev) => [...prev, card.id]);
 
-    setSelectedCards((prev) => getRandomElements(prev, prev.length));
+      setSelectedCards((prev) => getRandomElements(prev, prev.length));
+    }
   };
   const isDisabled = gameState === "win" || gameState === "over" ? true : false;
   const disabledStyle = isDisabled

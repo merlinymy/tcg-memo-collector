@@ -16,6 +16,7 @@ export function StartingPage({ setPage }) {
         <div className="menu-btns flex flex-col gap-2">
           <Button handleClick={() => startGame()}>Play</Button>
           <Button handleClick={() => openMyCollection()}>My Collection</Button>
+          <Button>Setting</Button>
         </div>
       </div>
     </div>

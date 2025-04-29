@@ -8,6 +8,7 @@ import {
 import { GameOver } from "./GameOver";
 import { Win } from "./Win";
 import { FullCollection } from "./FullCollection";
+import { TopBar } from "./TopBar";
 
 export function Game({
   collectedCards,
@@ -21,10 +22,12 @@ export function Game({
   const [gameState, setGameState] = useState("playing");
   const [lengthOfSet, setLengthOfSet] = useState();
   const [gameInfo, setGameInfo] = useState(localGameInfo);
-  //gameInfo
-
-  const curLevel = gameInfo.selectedSetId?.curLevel ?? 0;
   const selectedSetId = selectedSet.id;
+  const curLevel = gameInfo[selectedSetId]?.curLevel ?? 0;
+  const endlessLevel = gameInfo[selectedSetId]?.endlessRound ?? 1;
+  const endlessScore = gameInfo[selectedSetId]?.endlessScore ?? 0;
+  const endlessHighScore = gameInfo[selectedSetId]?.endlessHighScore ?? 0;
+  const isInEndless = gameInfo[selectedSetId]?.endlessRound ? true : false;
 
   useEffect(() => {
     if (gameState !== "playing") {
@@ -50,8 +53,8 @@ export function Game({
       setLengthOfSet(() => cards.length);
       setGameInfo((prev) => ({
         ...prev,
-        selectedSetId: {
-          ...prev.selectedSetId,
+        [selectedSetId]: {
+          ...prev[selectedSetId],
           distribution: levelDistribution,
           curLevel: curLevel,
         },
@@ -62,27 +65,55 @@ export function Game({
 
   // things to do when player win the round
   useEffect(() => {
+    console.log(clickedCards);
     if (
       clickedCards.length === selectedCards.length &&
       selectedCards.length > 0
     ) {
-      setGameState(() => "win");
-      setCollectedCards((prev) => ({
-        ...prev,
-        [selectedSet.id]: [
-          ...prev[selectedSet.id],
-          ...selectedCards.map((card) => card.id),
-        ],
-      }));
-      setGameInfo((prev) => ({
-        ...prev,
-        selectedSetId: {
-          ...prev.selectedSetId,
-          curLevel: prev.selectedSetId.curLevel + 1,
-        },
-      }));
+      console.log(isInEndless);
+
+      if (!isInEndless) {
+        setGameState(() => "win");
+        setCollectedCards((prev) => ({
+          ...prev,
+          [selectedSet.id]: [
+            ...prev[selectedSet.id],
+            ...selectedCards.map((card) => card.id),
+          ],
+        }));
+        setGameInfo((prev) => ({
+          ...prev,
+          [selectedSetId]: {
+            ...prev[selectedSetId],
+            curLevel: prev[selectedSetId].curLevel + 1,
+          },
+        }));
+      } else {
+        setGameState(() => "win");
+        setGameInfo((prev) => ({
+          ...prev,
+          [selectedSetId]: {
+            ...prev[selectedSetId],
+            endlessRound: prev[selectedSetId].endlessRound + 1,
+            endlessScore: prev[selectedSetId].endlessRound,
+            endlessHighScore: Math.max(
+              prev[selectedSetId].endlessHighScore,
+              prev[selectedSetId].endlessRound
+            ),
+          },
+        }));
+      }
     }
-  }, [clickedCards, selectedCards, selectedSet, setCollectedCards]);
+  }, [
+    clickedCards,
+    selectedCards,
+    selectedSet,
+    setCollectedCards,
+    selectedSetId,
+    isInEndless,
+  ]);
+
+  // for localstorage
 
   useEffect(() => {
     localStorage.setItem(
@@ -94,11 +125,67 @@ export function Game({
     localStorage.setItem("tcg-memo-gameInfo", JSON.stringify(gameInfo));
   }, [gameInfo]);
 
+  //   for endless mode
+  useEffect(() => {
+    if (gameState === "endless-restart") {
+      async function fetchCards() {
+        const url = `data/cards/${selectedSetId}.json`;
+        const response = await fetch(url);
+        const cards = await response.json();
+
+        const randomN = getRandomElements(cards, endlessLevel);
+        setSelectedCards(randomN);
+        setLengthOfSet(() => cards.length);
+        setGameInfo((prev) => ({
+          ...prev,
+          [selectedSetId]: {
+            ...prev[selectedSetId],
+            endlessRound: 1,
+            endlessScore: 0,
+          },
+        }));
+      }
+      fetchCards();
+    }
+    if (gameState === "endless") {
+      console.log("in endless");
+      async function fetchCards() {
+        const url = `data/cards/${selectedSetId}.json`;
+        const response = await fetch(url);
+        const cards = await response.json();
+
+        const randomN = getRandomElements(cards, endlessLevel);
+        setSelectedCards(randomN);
+        setLengthOfSet(() => cards.length);
+        setGameInfo((prev) => ({
+          ...prev,
+          [selectedSetId]: {
+            ...prev[selectedSetId],
+            endlessRound: endlessLevel,
+            endlessHighScore: endlessHighScore,
+            endlessScore: endlessScore,
+          },
+        }));
+      }
+      fetchCards();
+    }
+  }, [gameState, endlessLevel, selectedSetId, endlessHighScore, endlessScore]);
+
+  // for 100% a set
   useEffect(() => {
     if (collectedCards[selectedSet.id].length === lengthOfSet) {
       setGameState("setCollected");
+      setGameInfo((prev) => ({
+        ...prev,
+        [selectedSetId]: {
+          ...prev[selectedSetId],
+          endlessRound: 1,
+        },
+      }));
     }
-  }, [collectedCards, lengthOfSet, selectedSet]);
+  }, [collectedCards, lengthOfSet, selectedSet, selectedSetId]);
+
+  // to modify popup windows
 
   let popUpWindow;
   switch (gameState) {
@@ -108,6 +195,8 @@ export function Game({
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
+          isInEndless={isInEndless}
+          endlessLevel={endlessLevel}
         />
       );
       break;
@@ -117,6 +206,7 @@ export function Game({
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
+          isInEndless={isInEndless}
         />
       );
       break;
@@ -126,6 +216,7 @@ export function Game({
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
+          //   setGameInfo={setGameInfo}
         ></FullCollection>
       );
       break;
@@ -138,16 +229,26 @@ export function Game({
       {popUpWindow}
       {gameState === "playing" && (
         <p className="text-center">
-          {selectedSet.name} - level {gameInfo.selectedSetId?.curLevel + 1}
+          {selectedSet.name} - level {gameInfo[selectedSetId]?.curLevel + 1}
         </p>
       )}
       {gameState === "playing" && (
         <p className="text-center">
           Cards remaining:{" "}
-          {gameInfo.selectedSetId?.distribution[
-            gameInfo.selectedSetId?.curLevel
+          {gameInfo[selectedSetId]?.distribution[
+            gameInfo[selectedSetId]?.curLevel
           ] - clickedCards.length}
         </p>
+      )}
+      {(gameState === "endless" || gameState === "endless-restart") && (
+        <div className="endless-wrap">
+          <div className="endless-info-wrap">
+            <p>{selectedSet.name} - Endless Mode</p>
+            <p>Round: {gameInfo[selectedSetId]?.endlessRound}</p>
+          </div>
+          <p>Score: {gameInfo[selectedSetId]?.endlessScore}</p>
+          <p>High Score: {gameInfo[selectedSetId]?.endlessHighScore}</p>
+        </div>
       )}
       <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
         {selectedCards.map((card) => (
@@ -159,6 +260,7 @@ export function Game({
             setGameState={setGameState}
             setSelectedCards={setSelectedCards}
             gameState={gameState}
+            isInEndless={isInEndless}
           ></InGameCard>
         ))}
       </div>

@@ -1,12 +1,22 @@
 import { Button } from "./Button";
 
-export function GameOver({ setPage, setGameState, setClickedCards }) {
+export function GameOver({
+  setPage,
+  setGameState,
+  setClickedCards,
+  isInEndless,
+  endlessLevel,
+}) {
   const backToMenu = () => {
     setPage("starting");
     setClickedCards([]);
   };
   const playAgain = () => {
-    setGameState("playing");
+    if (isInEndless) {
+      setGameState("endless-restart");
+    } else {
+      setGameState("playing");
+    }
     setClickedCards([]);
   };
   const backToSelection = () => {
@@ -15,7 +25,13 @@ export function GameOver({ setPage, setGameState, setClickedCards }) {
   };
   return (
     <div>
-      <p>You lose, No cards collected</p>
+      {!isInEndless && (
+        <div>
+          <p>No cards collected this time</p>{" "}
+          <p> Insert memory to continue...</p>
+        </div>
+      )}
+      {isInEndless && <p>Game Over! You reached Round {endlessLevel - 1}</p>}
       <Button handleClick={playAgain}>Try Again</Button>
       <Button handleClick={backToSelection}>Go Back</Button>
       <Button handleClick={backToMenu}>Menu</Button>

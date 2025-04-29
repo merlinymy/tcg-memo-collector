@@ -13,7 +13,7 @@ export function Win({
   };
   const playAgain = () => {
     console.log(isInEndless);
-    if (isInEndless !== undefined || isInEndless !== null) {
+    if (isInEndless) {
       setGameState("endless");
     } else {
       setGameState("playing");

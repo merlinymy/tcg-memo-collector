@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Collections } from "./components/Collections";
 import { StartingPage } from "./components/StartingPage";
@@ -18,6 +18,15 @@ function App() {
   const [collectedCards, setCollectedCards] = useState(
     () => localCollectedCards
   );
+
+  const musicRef = useRef(null);
+
+  useEffect(() => {
+    musicRef.current = new Audio();
+    musicRef.current.loop = true;
+    musicRef.current.src = "data/music.ppl-menu.mp3";
+    musicRef.current.play();
+  }, []);
 
   switch (page) {
     case "starting":

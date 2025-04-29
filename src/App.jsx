@@ -1,3 +1,4 @@
+// App.jsx
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Collections } from "./components/Collections";
@@ -9,30 +10,38 @@ import { getOrInitializeLocalStorage } from "./utils";
 import { EntryPage } from "./components/EntryPage";
 
 function App() {
+  /* ---------- persistent data ---------- */
   const localCollectedCards = getOrInitializeLocalStorage(
     "tcg-memo-collectedCards",
     {}
   );
 
+  /* ---------- UI state ---------- */
   const [page, setPage] = useState("entry");
   const [selectedSet, setSelectedSet] = useState({});
   const [collectedCards, setCollectedCards] = useState(
     () => localCollectedCards
   );
 
+  /* ---------- music ---------- */
   const battleTracks = [
-    "music/battleNormal.mp3",
-    "music/battlePinch.mp3",
-    "music/battleChance.mp3",
+    "/music/battleNormal.mp3",
+    "/music/battlePinch.mp3",
+    "/music/battleChance.mp3",
   ];
 
-  const musicRef = useRef(new Audio());
+  const musicRef = useRef(null); // created later (inside EntryPage tap)
   const [gameTrackIdx, setGameTrackIdx] = useState(() =>
     Math.floor(Math.random() * battleTracks.length)
   );
+
+  /* ----- change / cross-fade track whenever page changes ----- */
   useEffect(() => {
+    if (!musicRef.current) return; // not unlocked yet on iOS
+
     const audio = musicRef.current;
     audio.loop = true;
+
     let musicSrc = "";
     switch (page) {
       case "starting":
@@ -50,21 +59,25 @@ function App() {
       default:
         musicSrc = "";
     }
-    // ——— nothing to do if this page has no music ———
     if (!musicSrc) return;
+
+    // use an absolute URL so string compare works on Safari
     const fullUrl = window.location.origin + musicSrc;
     if (audio.src === fullUrl) return; // already on this track
-    // ——— cross-fade ———
-    const step = 0.05; // volume step
-    const interval = 40; // ms  (≈ 0.8 s for full fade)
+
+    /* ----- simple cross-fade ----- */
+    const step = 0.05;
+    const interval = 40; // ms
+
     const fadeOut = setInterval(() => {
       audio.volume = Math.max(0, audio.volume - step);
       if (audio.volume === 0) {
         clearInterval(fadeOut);
         audio.pause();
         audio.currentTime = 0;
+
         audio.src = musicSrc;
-        audio.volume = 0; // start new track silent
+        audio.volume = 0;
         audio
           .play()
           .then(() => {
@@ -73,20 +86,30 @@ function App() {
               if (audio.volume === 1) clearInterval(fadeIn);
             }, interval);
           })
-          .catch((e) => console.log("Autoplay blocked:", e));
+          .catch((e) => console.log("autoplay blocked:", e));
       }
     }, interval);
-  }, [page, battleTracks, gameTrackIdx]);
 
+    return () => clearInterval(fadeOut);
+  }, [page, gameTrackIdx, battleTracks]);
+
+  /* ---------- JSX routing ---------- */
   switch (page) {
     case "entry":
-      return <EntryPage setPage={setPage} musicRef={musicRef}></EntryPage>;
+      return (
+        <EntryPage
+          setPage={setPage}
+          musicRef={musicRef} // ⬅️ first tap creates & unlocks Audio
+        />
+      );
+
     case "starting":
-      return <StartingPage setPage={setPage}></StartingPage>;
+      return <StartingPage setPage={setPage} />;
+
     case "collections":
       return (
         <Collections
-          type={"sets"}
+          type="sets"
           setPage={setPage}
           setSelectedSet={setSelectedSet}
           set={selectedSet}
@@ -96,11 +119,12 @@ function App() {
         >
           <TopBar
             setPage={setPage}
-            prevPage={"starting"}
+            prevPage="starting"
             isInGameSelect={false}
-          ></TopBar>
+          />
         </Collections>
       );
+
     case "gameSelect":
       return (
         <GameSelect
@@ -109,17 +133,15 @@ function App() {
           set={selectedSet}
           collectedCards={collectedCards}
         >
-          <TopBar
-            setPage={setPage}
-            prevPage={"starting"}
-            isInGameSelect={true}
-          ></TopBar>
+          <TopBar setPage={setPage} prevPage="starting" isInGameSelect={true} />
         </GameSelect>
       );
+
     case "game":
+      /* ensure each set has an entry in collectedCards */
       if (collectedCards[selectedSet.id] === undefined) {
         setCollectedCards((prev) => ({ ...prev, [selectedSet.id]: [] }));
-        return null; // wait until next render after state is ready
+        return null; // wait for next render
       }
       return (
         <Game
@@ -130,12 +152,13 @@ function App() {
           randomizeMusic={() =>
             setGameTrackIdx(Math.floor(Math.random() * battleTracks.length))
           }
-        ></Game>
+        />
       );
+
     case "cards":
       return (
         <Collections
-          type={"cards"}
+          type="cards"
           set={selectedSet}
           setPage={setPage}
           setSelectedSet={setSelectedSet}
@@ -143,13 +166,12 @@ function App() {
           collectedCards={collectedCards}
           page={page}
         >
-          <TopBar
-            prevPage={"collections"}
-            setPage={setPage}
-            isInGameSelect={false}
-          ></TopBar>
+          <TopBar prevPage="collections" setPage={setPage} />
         </Collections>
       );
+
+    default:
+      return null;
   }
 }
 

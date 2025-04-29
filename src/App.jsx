@@ -9,7 +9,7 @@ import { Game } from "./components/Game";
 import { getOrInitializeLocalStorage } from "./utils";
 import { EntryPage } from "./components/EntryPage";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-
+import { Analytics } from "@vercel/analytics/react";
 /* ─────────────────────────────────────────────────────────── */
 
 function App() {
@@ -195,6 +195,7 @@ function App() {
     <div>
       {component}
       <SpeedInsights />
+      <Analytics />
     </div>
   );
 }

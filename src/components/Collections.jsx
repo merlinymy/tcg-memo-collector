@@ -85,7 +85,6 @@ export function Collections({
     ) : (
       <div className="level-selection relative">
         {children}
-        <p>In level selection</p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 m-2">
           {data.map((d, idx, arr) => {
             const prevSet = arr[idx - 1];

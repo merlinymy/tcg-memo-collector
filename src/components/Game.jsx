@@ -9,6 +9,7 @@ import { GameOver } from "./GameOver";
 import { Win } from "./Win";
 import { FullCollection } from "./FullCollection";
 import { TopBar } from "./TopBar";
+import { PopupWindow } from "./PopupWindow";
 
 export function Game({
   collectedCards,
@@ -29,6 +30,7 @@ export function Game({
   const endlessScore = gameInfo[selectedSetId]?.endlessScore ?? 0;
   const endlessHighScore = gameInfo[selectedSetId]?.endlessHighScore ?? 0;
   const isInEndless = gameInfo[selectedSetId]?.endlessRound ? true : false;
+  const [enableTutorial, setEnableTutorial] = useState(true);
 
   useEffect(() => {
     if (gameState !== "playing") {
@@ -212,34 +214,37 @@ export function Game({
   switch (gameState) {
     case "over":
       popUpWindow = (
-        <GameOver
+        <PopupWindow
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
           isInEndless={isInEndless}
           endlessLevel={endlessLevel}
+          type="gameOver"
         />
       );
       break;
     case "win":
       popUpWindow = (
-        <Win
+        <PopupWindow
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
           isInEndless={isInEndless}
           gameInfo={gameInfo[selectedSetId]}
+          type="win"
         />
       );
       break;
     case "setCollected":
       popUpWindow = (
-        <FullCollection
+        <PopupWindow
           setGameState={setGameState}
           setPage={setPage}
           setClickedCards={setClickedCards}
           gameInfo={gameInfo[selectedSetId]}
-        ></FullCollection>
+          type="fullCollection"
+        ></PopupWindow>
       );
       break;
     default:

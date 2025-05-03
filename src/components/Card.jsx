@@ -235,6 +235,7 @@ export function Card({
                 glareBorderRadius="5px"
                 // scale={2}
                 transitionSpeed={1500}
+                tiltReverse={true}
               >
                 <img
                   className="card-img rounded-[5px] touch-none"

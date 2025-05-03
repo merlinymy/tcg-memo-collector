@@ -16,6 +16,7 @@
     "howler": "^2.2.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-parallax-tilt": "^1.7.294",
     "react-use-audio-player": "^4.0.2"
   },
   "devDependencies": {

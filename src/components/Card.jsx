@@ -1,5 +1,7 @@
 import "../styles/card.css";
 import tcg_back from "../assets/img/tcg_back.png";
+import AudioManager from "../audio/AudioManager";
+import Tilt from "react-parallax-tilt";
 export function Card({
   data,
   setPage,
@@ -13,12 +15,15 @@ export function Card({
 }) {
   // data is one set or one tcg card
   const openSet = (set) => {
+    AudioManager.playSfx("click");
     setLoading(() => true);
     setPage(() => "cards");
     setSelectedSet(() => set);
   };
 
   const gotoGamePage = (set) => {
+    AudioManager.playSfx("click");
+
     setLoading(true);
     setSelectedSet(() => set);
     setPage(() => "game");
@@ -37,6 +42,8 @@ export function Card({
     width: "100%", // Important to maintain full coverage
     height: "auto", // Keep aspect ratio
   };
+
+  const enlarge = () => {};
 
   if (isInGame) {
     // render sets click to Game component
@@ -134,16 +141,27 @@ export function Card({
     //render cards
     return (
       <div
-        className={`rounded-[5px] overflow-hidden cursor-pointer${
+        className={`rounded-[5px] cursor-pointer${
           page !== "cards" ? " p-3" : ""
         }`}
       >
         {collectedCards[selectedSet.id]?.includes(data.id) ? (
-          <img
-            className="card-img rounded-[5px]"
-            src={data.images.large}
-            alt={`image for tcg card ${data.name}`}
-          />
+          <div className="empty-card rounded-[5px] bg-[#feffff] h-[100%] relative inset-shadow-sm inset-shadow-[grey]">
+            <Tilt
+              glareEnable={true}
+              glareMaxOpacity={0.75}
+              glareColor="white"
+              glarePosition="all"
+              glareBorderRadius="5px"
+            >
+              <img
+                className="card-img rounded-[5px]"
+                src={data.images.large}
+                alt={`image for tcg card ${data.name}`}
+                onClick={enlarge}
+              />
+            </Tilt>
+          </div>
         ) : (
           <div className="empty-card bg-[#feffff] h-[100%] relative inset-shadow-sm inset-shadow-[grey]">
             <img

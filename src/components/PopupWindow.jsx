@@ -130,7 +130,7 @@ export function PopupWindow({
 
   /* ---------- render ---------- */
   return (
-    <div className="popup fixed flex flex-col gap-2 bg-[white]/40 backdrop-blur-sm p-4 text-center top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+    <div className="popup fixed flex flex-col gap-2 bg-[white]/40 backdrop-blur-sm p-4 text-center top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%] z-100">
       {body}
       {buttons}
       <Button handleClick={goToCollection}>Collections</Button>

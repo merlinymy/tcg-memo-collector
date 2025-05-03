@@ -1,5 +1,6 @@
 import AudioManager from "../audio/AudioManager";
 import { getRandomElements } from "../utils";
+import Tilt from "react-parallax-tilt";
 
 export function InGameCard({
   card,
@@ -26,14 +27,22 @@ export function InGameCard({
   return (
     <div
       style={disabledStyle}
-      className="rounded-[5px] overflow-hidden m-1.5"
+      className="rounded-[5px] m-1.5"
       onClick={handleClick}
     >
-      <img
-        className="card-img"
-        src={card.images.large}
-        alt={`image for tcg card ${card.name}`}
-      />
+      <Tilt
+        glareEnable={true}
+        glareMaxOpacity={0.75}
+        glareColor="white"
+        glarePosition="all"
+        glareBorderRadius="5px"
+      >
+        <img
+          className="card-img rounded-[5px]"
+          src={card.images.large}
+          alt={`image for tcg card ${card.name}`}
+        />
+      </Tilt>
     </div>
   );
 }

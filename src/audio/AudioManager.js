@@ -21,8 +21,6 @@ class AudioManager {
       console.warn(`No BGM registered under “${key}”`);
       return;
     }
-    console.log(key);
-    console.log(this.currentKey);
 
     if (key === this.currentKey) {
       return;

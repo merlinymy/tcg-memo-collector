@@ -29,3 +29,7 @@
   width: 100%;
   /* max-width: 200px; */
 }
+.spin {
+  transition: transform 0.5s ease;
+  transform: rotateY(360deg);
+}

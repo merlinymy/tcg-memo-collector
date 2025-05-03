@@ -23,10 +23,7 @@ export function PopupWindow({
   gameInfo = { endlessScore: 0 },
 }) {
   useEffect(() => {
-    // AudioManager.stopBgm();
-    // setTimeout(() => {
     AudioManager.playBgm("battleResult");
-    // }, 3000);
   });
 
   const resetClicks = () => setClickedCards([]);

@@ -25,12 +25,3 @@
   position: relative;
   display: inline-block;
 }
-.card-img {
-  width: 100%;
-  /* position: fixed; */
-  /* max-width: 200px; */
-  transition: transform 5.5s ease;
-}
-.card-img-back {
-  transition: transform 5.5s ease;
-}

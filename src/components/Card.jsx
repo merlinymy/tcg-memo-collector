@@ -58,9 +58,10 @@ export function Card({
     }
   };
   useEffect(() => {
-    console.log(clickTarget);
-
     if (isEnlarge) {
+      console.log("enlarge");
+
+      document.body.style.overflow = "hidden";
       const rect = clickTarget.getBoundingClientRect();
       console.log(`Top: ${rect.top}px, Left: ${rect.left}px`);
       clickTarget.style.position = "fixed";
@@ -80,6 +81,7 @@ export function Card({
         clickTarget.style.transform = "translate(-50%, -50%) rotateY(360deg)";
       }, 0);
     } else if (!isEnlarge && clickTarget) {
+      console.log("shrink");
       const rect = clickTarget.getBoundingClientRect();
       const oldRect = oldPos;
       clickTarget.style.position = "fixed";
@@ -88,7 +90,7 @@ export function Card({
       clickTarget.style.width = `${rect.width}px`;
       clickTarget.style.height = `${rect.height}px`;
       clickTarget.style.transition = "all 1.5s ease";
-      console.log(oldRect);
+      // console.log(oldRect);
       setTimeout(() => {
         clickTarget.style.zIndex = "10";
         clickTarget.style.top = `${oldRect.top}px`;
@@ -97,10 +99,25 @@ export function Card({
         clickTarget.style.height = `${oldRect.height}px`;
         clickTarget.style.transform = "none";
       }, 0);
-      clickTarget.addEventListener("transitionend", () => {
-        clickTarget.style.position = "static";
-        console.log("Collapse animation finished, cleaned up styles.");
-      });
+      clickTarget.addEventListener(
+        "transitionend",
+        () => {
+          [
+            "position",
+            "top",
+            "left",
+            "width",
+            "height",
+            "transition",
+            "transform",
+            "zIndex",
+            "maxWidth",
+          ].forEach((prop) => clickTarget.style.removeProperty(prop));
+          setClickTarget(null);
+          document.body.style.overflow = "";
+        },
+        { once: true }
+      );
     }
   }, [isEnlarge, clickTarget, oldPos]);
 
@@ -217,7 +234,7 @@ export function Card({
                 glarePosition="all"
                 glareBorderRadius="5px"
                 // scale={2}
-                transitionSpeed={2500}
+                transitionSpeed={1500}
               >
                 <img
                   className="card-img rounded-[5px] touch-none"
@@ -226,11 +243,6 @@ export function Card({
                   // onClick={enlarge}
                 />
               </Tilt>
-              <img
-                className="card-img card-img-back rounded-[5px] touch-none"
-                src="../assets/img/tcg_back.png"
-                alt=""
-              />
             </div>
           </div>
         ) : (

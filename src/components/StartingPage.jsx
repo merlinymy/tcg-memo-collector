@@ -1,7 +1,12 @@
 import { Button } from "./Button";
 import { Title } from "./Title";
+import { useEffect } from "react";
+import AudioManager from "../audio/AudioManager";
 
 export function StartingPage({ setPage }) {
+  useEffect(() => {
+    AudioManager.playBgm("menu");
+  });
   const startGame = function () {
     setPage("gameSelect");
   };

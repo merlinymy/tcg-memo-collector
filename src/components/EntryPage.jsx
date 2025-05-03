@@ -1,5 +1,12 @@
+import AudioManager from "../audio/AudioManager";
+import { useEffect } from "react";
 export function EntryPage({ setPage }) {
+  useEffect(() => {
+    AudioManager.playBgm("menu");
+  }, []);
+
   const start = () => {
+    AudioManager.playSfx("click");
     setPage("starting");
   };
 

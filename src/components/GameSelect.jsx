@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Collections } from "./Collections";
+import AudioManager from "../audio/AudioManager";
 
 export function GameSelect({
   children,
@@ -7,7 +9,9 @@ export function GameSelect({
   set,
   collectedCards,
 }) {
-  console.log("render - select");
+  useEffect(() => {
+    AudioManager.playBgm("battleMenu");
+  });
   return (
     <div className="level-wrap relative">
       {children}

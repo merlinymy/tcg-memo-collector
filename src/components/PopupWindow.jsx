@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import { Button } from "./Button";
+import AudioManager from "../audio/AudioManager";
 
 /**
  * PopupWindow
@@ -19,10 +21,11 @@ export function PopupWindow({
   isInEndless = false,
   endlessLevel = 1,
   gameInfo = { endlessScore: 0 },
-  enableTutorial,
-  setEnableTutorial,
 }) {
-  /* ---------- shared handlers ---------- */
+  useEffect(() => {
+    AudioManager.playBgm("battleResult");
+  });
+
   const resetClicks = () => setClickedCards([]);
 
   const backToMenu = () => {

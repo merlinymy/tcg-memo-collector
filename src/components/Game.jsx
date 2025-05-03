@@ -6,6 +6,7 @@ import {
   getOrInitializeLocalStorage,
 } from "../utils";
 import { PopupWindow } from "./PopupWindow";
+import AudioManager from "../audio/AudioManager";
 
 export function Game({
   collectedCards,
@@ -33,6 +34,11 @@ export function Game({
     localStorage.setItem("tutorialShown", "true");
     setEnableTutorial(false);
   };
+
+  useEffect(() => {
+    const musicArr = ["battle1", "battle2", "battle3"];
+    AudioManager.playBgm(musicArr[Math.floor(Math.random() * 3)]);
+  }, [curLevel, gameState]);
 
   useEffect(() => {
     if (gameState !== "playing") {

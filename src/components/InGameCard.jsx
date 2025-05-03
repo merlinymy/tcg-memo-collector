@@ -1,3 +1,4 @@
+import AudioManager from "../audio/AudioManager";
 import { getRandomElements } from "../utils";
 
 export function InGameCard({
@@ -12,6 +13,7 @@ export function InGameCard({
     if (clickedCards.includes(card.id)) {
       setGameState("over");
     } else {
+      AudioManager.playSfx("flip");
       setClickedCards((prev) => [...prev, card.id]);
 
       setSelectedCards((prev) => getRandomElements(prev, prev.length));

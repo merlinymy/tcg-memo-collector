@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { Collections } from "./components/Collections";
 import { StartingPage } from "./components/StartingPage";
@@ -10,6 +10,7 @@ import { getOrInitializeLocalStorage } from "./utils";
 import { EntryPage } from "./components/EntryPage";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
+import AudioManager from "./audio/AudioManager";
 
 function App() {
   const localCollectedCards = getOrInitializeLocalStorage(
@@ -22,6 +23,18 @@ function App() {
   const [collectedCards, setCollectedCards] = useState(
     () => localCollectedCards
   );
+
+  AudioManager.registerBgm("menu", "/audio/pocketMenu.mp3", 0.35);
+  AudioManager.registerBgm("battleMenu", "/audio/battleMenu.mp3", 0.35);
+  AudioManager.registerBgm("collection", "/audio/collection.mp3", 0.35);
+
+  AudioManager.registerBgm("battle1", "/audio/battleChance.mp3", 0.35);
+  AudioManager.registerBgm("battle2", "/audio/battleNormal.mp3", 0.35);
+  AudioManager.registerBgm("battle3", "/audio/battlePinch.mp3", 0.35);
+  AudioManager.registerBgm("battleResult", "/audio/battleResult.mp3", 0.35);
+
+  AudioManager.registerSfx("click", "/audio/menuClick.mp3", 0.5);
+  AudioManager.registerSfx("flip", "/audio/cardFlip.mp3", 0.5);
 
   let component;
   switch (page) {

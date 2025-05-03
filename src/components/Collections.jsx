@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "./Card";
 import { TopBar } from "./TopBar";
+import AudioManager from "../audio/AudioManager";
 
 export function Collections({
   type,
@@ -14,6 +15,10 @@ export function Collections({
 }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    AudioManager.playBgm("collection");
+  });
 
   useEffect(() => {
     async function fetchData() {

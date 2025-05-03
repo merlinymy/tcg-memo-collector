@@ -19,12 +19,14 @@ export function InGameCard({
       AudioManager.playSfx("flip");
       setFlipped((prev) => !prev);
       setClickedCards((prev) => [...prev, card.id]);
+      document.body.style.pointerEvents = "none";
       setTimeout(() => {
         setSelectedCards((prev) => getRandomElements(prev, prev.length));
-      }, 400);
+      }, 380);
       setTimeout(() => {
         setFlipped((prev) => !prev);
-      }, 800);
+        document.body.style.pointerEvents = "";
+      }, 450);
     }
   };
 

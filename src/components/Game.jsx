@@ -263,7 +263,7 @@ export function Game({
     <div className="game-wrap">
       {enableTutorial && (
         <div
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center"
+          className="fixed inset-0 z-100 bg-black/30 backdrop-blur-sm flex justify-center items-center"
           onClick={handleCloseTutorial}
         >
           <div

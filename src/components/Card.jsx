@@ -226,10 +226,10 @@ export function Card({
             className="rounded-[5px] bg-[#feffff] h-[100%]  inset-shadow-sm inset-shadow-[grey]"
             onClick={enlarge}
           >
-            <div>
+            <div className="relative">
               <Tilt
                 glareEnable={true}
-                glareMaxOpacity={0.75}
+                glareMaxOpacity={0.35}
                 glareColor="white"
                 glarePosition="all"
                 glareBorderRadius="5px"

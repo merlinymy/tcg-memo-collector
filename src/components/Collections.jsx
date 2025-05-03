@@ -90,7 +90,7 @@ export function Collections({
     ) : (
       <div className="level-selection relative">
         {children}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 m-2">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 m-6">
           {data.map((d, idx, arr) => {
             const prevSet = arr[idx - 1];
             let prevSetPrecent = 100;

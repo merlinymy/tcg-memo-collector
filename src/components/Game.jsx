@@ -21,6 +21,8 @@ export function Game({
   const [lengthOfSet, setLengthOfSet] = useState();
   const [gameInfo, setGameInfo] = useState(localGameInfo);
   const selectedSetId = selectedSet.id;
+  const [flipped, setFlipped] = useState(false);
+
   const curLevel = gameInfo[selectedSetId]?.curLevel ?? 0;
   const endlessLevel = gameInfo[selectedSetId]?.endlessRound ?? 1;
   const endlessScore = gameInfo[selectedSetId]?.endlessScore ?? 0;
@@ -313,6 +315,8 @@ export function Game({
               setSelectedCards={setSelectedCards}
               gameState={gameState}
               isInEndless={isInEndless}
+              flipped={flipped}
+              setFlipped={setFlipped}
             ></InGameCard>
           ))}
         </div>

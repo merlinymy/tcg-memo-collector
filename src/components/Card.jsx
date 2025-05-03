@@ -52,7 +52,6 @@ export function Card({
     const target = e.target.parentElement.parentElement;
     setIsEnlarge((prev) => !prev);
     setClickTarget(() => target);
-    console.log(target.getBoundingClientRect());
     if (!isEnlarge) {
       setOldPos(() => target.getBoundingClientRect());
     }
@@ -60,10 +59,10 @@ export function Card({
   useEffect(() => {
     if (isEnlarge) {
       console.log("enlarge");
-
+      document.body.style.pointerEvents = "none";
+      clickTarget.style.pointerEvents = "all";
       document.body.style.overflow = "hidden";
       const rect = clickTarget.getBoundingClientRect();
-      console.log(`Top: ${rect.top}px, Left: ${rect.left}px`);
       clickTarget.style.position = "fixed";
       clickTarget.style.top = `${rect.top}px`;
       clickTarget.style.left = `${rect.left}px`;
@@ -115,6 +114,7 @@ export function Card({
           ].forEach((prop) => clickTarget.style.removeProperty(prop));
           setClickTarget(null);
           document.body.style.overflow = "";
+          document.body.style.pointerEvents = "";
         },
         { once: true }
       );

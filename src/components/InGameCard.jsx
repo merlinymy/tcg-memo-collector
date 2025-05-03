@@ -36,6 +36,7 @@ export function InGameCard({
         glareColor="white"
         glarePosition="all"
         glareBorderRadius="5px"
+        tiltReverse={true}
       >
         <img
           className="card-img rounded-[5px]"

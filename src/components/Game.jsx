@@ -5,10 +5,6 @@ import {
   distributeArray,
   getOrInitializeLocalStorage,
 } from "../utils";
-import { GameOver } from "./GameOver";
-import { Win } from "./Win";
-import { FullCollection } from "./FullCollection";
-import { TopBar } from "./TopBar";
 import { PopupWindow } from "./PopupWindow";
 
 export function Game({
@@ -16,7 +12,6 @@ export function Game({
   selectedSet,
   setPage,
   setCollectedCards,
-  randomizeMusic,
 }) {
   const localGameInfo = getOrInitializeLocalStorage("tcg-memo-gameInfo", {});
   const [selectedCards, setSelectedCards] = useState([]);
@@ -30,13 +25,20 @@ export function Game({
   const endlessScore = gameInfo[selectedSetId]?.endlessScore ?? 0;
   const endlessHighScore = gameInfo[selectedSetId]?.endlessHighScore ?? 0;
   const isInEndless = gameInfo[selectedSetId]?.endlessRound ? true : false;
-  const [enableTutorial, setEnableTutorial] = useState(true);
+  const [enableTutorial, setEnableTutorial] = useState(() => {
+    return localStorage.getItem("tutorialShown") !== "true";
+  });
+
+  const handleCloseTutorial = () => {
+    localStorage.setItem("tutorialShown", "true");
+    setEnableTutorial(false);
+  };
 
   useEffect(() => {
     if (gameState !== "playing") {
       return;
     }
-    randomizeMusic();
+
     async function fetchCards() {
       const collectedCardsSet = new Set(collectedCards[selectedSetId]);
 
@@ -253,43 +255,61 @@ export function Game({
 
   return (
     <div className="game-wrap">
-      {popUpWindow}
-      {gameState === "playing" && (
-        <p className="text-center">
-          {selectedSet.name} - level {gameInfo[selectedSetId]?.curLevel + 1}
-        </p>
-      )}
-      {gameState === "playing" && (
-        <p className="text-center">
-          Cards remaining:{" "}
-          {gameInfo[selectedSetId]?.distribution[
-            gameInfo[selectedSetId]?.curLevel
-          ] - clickedCards.length}
-        </p>
-      )}
-      {(gameState === "endless" || gameState === "endless-restart") && (
-        <div className="endless-wrap">
-          <div className="endless-info-wrap">
-            <p>{selectedSet.name} - Endless Mode</p>
-            <p>Round: {gameInfo[selectedSetId]?.endlessRound}</p>
+      {enableTutorial && (
+        <div
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-center"
+          onClick={handleCloseTutorial}
+        >
+          <div
+            className="flex flex-col gap-2 bg-white/95 p-4 text-center"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside box
+          >
+            <p>How to Play</p>
+            <hr />
+            <p>Click each card only once — no repeats!</p>
+            <p>Complete the round to add cards to your collection!</p>
           </div>
-          <p>Score: {gameInfo[selectedSetId]?.endlessScore}</p>
-          <p>High Score: {gameInfo[selectedSetId]?.endlessHighScore}</p>
         </div>
       )}
-      <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
-        {selectedCards.map((card) => (
-          <InGameCard
-            key={card.id}
-            card={card}
-            clickedCards={clickedCards}
-            setClickedCards={setClickedCards}
-            setGameState={setGameState}
-            setSelectedCards={setSelectedCards}
-            gameState={gameState}
-            isInEndless={isInEndless}
-          ></InGameCard>
-        ))}
+      <div className={`${enableTutorial ? "pointer-events-none" : ""}`}>
+        {popUpWindow}
+        {gameState === "playing" && (
+          <p className="text-center">
+            {selectedSet.name} - level {gameInfo[selectedSetId]?.curLevel + 1}
+          </p>
+        )}
+        {gameState === "playing" && (
+          <p className="text-center">
+            Cards remaining:{" "}
+            {gameInfo[selectedSetId]?.distribution[
+              gameInfo[selectedSetId]?.curLevel
+            ] - clickedCards.length}
+          </p>
+        )}
+        {(gameState === "endless" || gameState === "endless-restart") && (
+          <div className="endless-wrap">
+            <div className="endless-info-wrap">
+              <p>{selectedSet.name} - Endless Mode</p>
+              <p>Round: {gameInfo[selectedSetId]?.endlessRound}</p>
+            </div>
+            <p>Score: {gameInfo[selectedSetId]?.endlessScore}</p>
+            <p>High Score: {gameInfo[selectedSetId]?.endlessHighScore}</p>
+          </div>
+        )}
+        <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
+          {selectedCards.map((card) => (
+            <InGameCard
+              key={card.id}
+              card={card}
+              clickedCards={clickedCards}
+              setClickedCards={setClickedCards}
+              setGameState={setGameState}
+              setSelectedCards={setSelectedCards}
+              gameState={gameState}
+              isInEndless={isInEndless}
+            ></InGameCard>
+          ))}
+        </div>
       </div>
     </div>
   );

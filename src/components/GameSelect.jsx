@@ -11,7 +11,6 @@ export function GameSelect({
   return (
     <div className="level-wrap relative">
       {children}
-      <p>Select a set</p>
       <Collections
         type={"sets"}
         setPage={setPage}

@@ -19,6 +19,8 @@ export function PopupWindow({
   isInEndless = false,
   endlessLevel = 1,
   gameInfo = { endlessScore: 0 },
+  enableTutorial,
+  setEnableTutorial,
 }) {
   /* ---------- shared handlers ---------- */
   const resetClicks = () => setClickedCards([]);
@@ -58,7 +60,6 @@ export function PopupWindow({
     setPage("collections");
     resetClicks();
   };
-
   /* ----------  type‑specific markup ---------- */
   let body = null;
   let buttons = null;

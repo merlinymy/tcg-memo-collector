@@ -1,14 +1,5 @@
-export function EntryPage({ musicRef, setPage }) {
+export function EntryPage({ setPage }) {
   const start = () => {
-    if (!musicRef.current) {
-      const a = new Audio("/music/pocketMenu.mp3"); // initial track
-      a.loop = true;
-      a.volume = 1;
-      a.play().catch((err) => console.log("blocked:", err));
-      musicRef.current = a; // 🔑 store same object
-    } else {
-      musicRef.current.play().catch(() => {});
-    }
     setPage("starting");
   };
 

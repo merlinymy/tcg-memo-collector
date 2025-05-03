@@ -48,7 +48,7 @@ export function Collections({
       page === "collections" ? (
         <div className="collection-wrap relative">
           {children}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 m-2">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 m-4">
             {data.map((d) => {
               return (
                 <Card
@@ -68,7 +68,7 @@ export function Collections({
       ) : (
         <div className="collection-wrap relative">
           {children}
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 m-2">
+          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 m-4">
             {data.map((d) => {
               return (
                 <Card

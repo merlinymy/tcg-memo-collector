@@ -2,6 +2,7 @@ import "../styles/card.css";
 import tcg_back from "../assets/img/tcg_back.png";
 import AudioManager from "../audio/AudioManager";
 import Tilt from "react-parallax-tilt";
+import { useEffect, useState } from "react";
 export function Card({
   data,
   setPage,
@@ -43,7 +44,65 @@ export function Card({
     height: "auto", // Keep aspect ratio
   };
 
-  const enlarge = () => {};
+  const [isEnlarge, setIsEnlarge] = useState(false);
+  const [clickTarget, setClickTarget] = useState(null);
+  const [oldPos, setOldPos] = useState(null);
+
+  const enlarge = (e) => {
+    const target = e.target.parentElement.parentElement;
+    setIsEnlarge((prev) => !prev);
+    setClickTarget(() => target);
+    console.log(target.getBoundingClientRect());
+    if (!isEnlarge) {
+      setOldPos(() => target.getBoundingClientRect());
+    }
+  };
+  useEffect(() => {
+    console.log(clickTarget);
+
+    if (isEnlarge) {
+      const rect = clickTarget.getBoundingClientRect();
+      console.log(`Top: ${rect.top}px, Left: ${rect.left}px`);
+      clickTarget.style.position = "fixed";
+      clickTarget.style.top = `${rect.top}px`;
+      clickTarget.style.left = `${rect.left}px`;
+      clickTarget.style.width = `${rect.width}px`;
+      clickTarget.style.height = `${rect.height}px`;
+      clickTarget.style.transition = "all 1.5s ease";
+
+      setTimeout(() => {
+        clickTarget.style.zIndex = "1001";
+        clickTarget.style.top = "50%";
+        clickTarget.style.left = "50%";
+        clickTarget.style.width = "90%";
+        clickTarget.style.maxWidth = "500px";
+        clickTarget.style.height = "auto";
+        clickTarget.style.transform = "translate(-50%, -50%) rotateY(360deg)";
+      }, 0);
+    } else if (!isEnlarge && clickTarget) {
+      const rect = clickTarget.getBoundingClientRect();
+      const oldRect = oldPos;
+      clickTarget.style.position = "fixed";
+      clickTarget.style.top = `${rect.top}px`;
+      clickTarget.style.left = `${rect.left}px`;
+      clickTarget.style.width = `${rect.width}px`;
+      clickTarget.style.height = `${rect.height}px`;
+      clickTarget.style.transition = "all 1.5s ease";
+      console.log(oldRect);
+      setTimeout(() => {
+        clickTarget.style.zIndex = "10";
+        clickTarget.style.top = `${oldRect.top}px`;
+        clickTarget.style.left = `${oldRect.left}px`;
+        clickTarget.style.width = `${oldRect.width}px`;
+        clickTarget.style.height = `${oldRect.height}px`;
+        clickTarget.style.transform = "none";
+      }, 0);
+      clickTarget.addEventListener("transitionend", () => {
+        clickTarget.style.position = "static";
+        console.log("Collapse animation finished, cleaned up styles.");
+      });
+    }
+  }, [isEnlarge, clickTarget, oldPos]);
 
   if (isInGame) {
     // render sets click to Game component
@@ -146,32 +205,46 @@ export function Card({
         }`}
       >
         {collectedCards[selectedSet.id]?.includes(data.id) ? (
-          <div className="empty-card rounded-[5px] bg-[#feffff] h-[100%] relative inset-shadow-sm inset-shadow-[grey]">
-            <Tilt
-              glareEnable={true}
-              glareMaxOpacity={0.75}
-              glareColor="white"
-              glarePosition="all"
-              glareBorderRadius="5px"
-            >
+          <div
+            className="rounded-[5px] bg-[#feffff] h-[100%]  inset-shadow-sm inset-shadow-[grey]"
+            onClick={enlarge}
+          >
+            <div>
+              <Tilt
+                glareEnable={true}
+                glareMaxOpacity={0.75}
+                glareColor="white"
+                glarePosition="all"
+                glareBorderRadius="5px"
+                // scale={2}
+                transitionSpeed={2500}
+              >
+                <img
+                  className="card-img rounded-[5px] touch-none"
+                  src={data.images.large}
+                  alt={`image for tcg card ${data.name}`}
+                  // onClick={enlarge}
+                />
+              </Tilt>
               <img
-                className="card-img rounded-[5px]"
-                src={data.images.large}
-                alt={`image for tcg card ${data.name}`}
-                onClick={enlarge}
+                className="card-img card-img-back rounded-[5px] touch-none"
+                src="../assets/img/tcg_back.png"
+                alt=""
               />
-            </Tilt>
+            </div>
           </div>
         ) : (
-          <div className="empty-card bg-[#feffff] h-[100%] relative inset-shadow-sm inset-shadow-[grey]">
-            <img
-              className="card-img opacity-0"
-              src={tcg_back}
-              alt={`image for tcg card ${data.name}`}
-            />
-            <p className="text-[#a4a4a4] text-5xl absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
-              {data.number}
-            </p>
+          <div className="empty-card bg-[#feffff] h-[100%] cursor-default z-10 inset-shadow-sm inset-shadow-[grey]">
+            <div className="relative">
+              <img
+                className="opacity-0"
+                src={tcg_back}
+                alt={`image for tcg card ${data.name}`}
+              />
+              <p className="text-[#a4a4a4] text-5xl absolute top-[50%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]">
+                {data.number}
+              </p>
+            </div>
           </div>
         )}
       </div>

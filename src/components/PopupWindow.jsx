@@ -23,7 +23,10 @@ export function PopupWindow({
   gameInfo = { endlessScore: 0 },
 }) {
   useEffect(() => {
+    // AudioManager.stopBgm();
+    // setTimeout(() => {
     AudioManager.playBgm("battleResult");
+    // }, 3000);
   });
 
   const resetClicks = () => setClickedCards([]);
@@ -69,6 +72,7 @@ export function PopupWindow({
 
   switch (type) {
     case "win":
+      AudioManager.playSfx("gameWin");
       body = (
         <p>
           {isInEndless
@@ -87,6 +91,8 @@ export function PopupWindow({
       break;
 
     case "gameOver":
+      AudioManager.playSfx("gameLose");
+
       body = isInEndless ? (
         <p>Game Over! You reached Round {endlessLevel - 1}</p>
       ) : (

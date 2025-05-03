@@ -18,7 +18,7 @@ export function Collections({
 
   useEffect(() => {
     AudioManager.playBgm("collection");
-  });
+  }, [type]);
 
   useEffect(() => {
     async function fetchData() {

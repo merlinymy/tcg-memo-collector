@@ -10,8 +10,9 @@ export function GameSelect({
   collectedCards,
 }) {
   useEffect(() => {
+    console.log("battleMenu");
     AudioManager.playBgm("battleMenu");
-  });
+  }, []);
   return (
     <div className="level-wrap relative">
       {children}

@@ -6,7 +6,6 @@ export function EntryPage({ setPage }) {
   }, []);
 
   const start = () => {
-    AudioManager.playSfx("click");
     setPage("starting");
   };
 

@@ -2,6 +2,8 @@
 
 **TCG Memory League** is an expanded take on The Odin Project’s memory card game project. Instead of just avoiding duplicate clicks, players **collect cards** by clearing rounds, aiming to complete entire TCG sets.
 
+🌐 **Live Project:** [tcgmemoryleague.merlinyang.com](https://tcgmemoryleague.merlinyang.com/)
+
 ---
 
 ## 📖 Features

@@ -12,8 +12,9 @@ export function Button({ children, handleClick, disabled }) {
           bg-yellow-300 text-gray-900            /* ✅ high contrast */
           hover:bg-yellow-400
           border-2 border-gray-900 rounded-lg
-          shadow-inner
-          transition-all active:translate-y-[1px]"
+          shadow-inner text-[0.75rem]
+          transition-all active:translate-y-[1px] 
+          flex items-center justify-center"
       onClick={onClick}
       disabled={disabled}
     >

@@ -56,6 +56,31 @@ class AudioManager {
     }
     fx.play();
   }
+
+  /* ――― master controls ――― */
+  setBgmVolume(v) {
+    this.bgmVolume = v;
+    localStorage.setItem("bgmVolume", v);
+    Object.values(this.bgms).forEach((h) => h.volume(this.bgmMuted ? 0 : v));
+  }
+
+  setSfxVolume(v) {
+    this.sfxVolume = v;
+    localStorage.setItem("sfxVolume", v);
+    Object.values(this.sfx).forEach((h) => h.volume(this.sfxMuted ? 0 : v));
+  }
+
+  toggleBgmMute() {
+    this.bgmMuted = !this.bgmMuted;
+    localStorage.setItem("bgmMuted", this.bgmMuted);
+    Object.values(this.bgms).forEach((h) => h.mute(this.bgmMuted));
+  }
+
+  toggleSfxMute() {
+    this.sfxMuted = !this.sfxMuted;
+    localStorage.setItem("sfxMuted", this.sfxMuted);
+    Object.values(this.sfx).forEach((h) => h.mute(this.sfxMuted));
+  }
 }
 
 export default new AudioManager();

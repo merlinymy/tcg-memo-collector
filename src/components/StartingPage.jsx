@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import AudioManager from "../audio/AudioManager";
 import Tilt from "react-parallax-tilt";
 import { Loading } from "./Loading";
+import { SettingsPopup } from "./SettingsPopup";
 
 export function StartingPage({ setPage }) {
   const [randomCards, setRandomCards] = useState([]);
 
   // for loading
-  const [loaded, setLoaded] = useState(0); // <- new
+  const [loaded, setLoaded] = useState(0);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
   const total = randomCards.length || 1;
   const percent = Math.round((loaded / total) * 100);
 
@@ -53,13 +56,20 @@ export function StartingPage({ setPage }) {
     setPage("collections");
   };
 
+  const openSettings = () => {
+    setSettingsOpen(true);
+  };
+
+  const closeSettings = () => {
+    setSettingsOpen(false);
+  };
+
   // Settings for random size scaling
   const minScale = 0.8; // 60% of base size
   const maxScale = 1.2; // 100% of base size
 
   return (
     <div className=" h-[100dvh] w-[100dvw] flex flex-col items-center justify-center relative overflow-hidden">
-      {/* LOADING OVERLAY – shows until every image has fired onLoad/onError */}
       {loaded < total && <Loading percent={percent} />}
 
       {/* Grid of cards */}
@@ -107,10 +117,11 @@ export function StartingPage({ setPage }) {
       <div className="p-5 btn-wrap w-100 absolute bottom-30 left-1/2 transform -translate-x-1/2 bg-[white]/80">
         <div className="menu-btns flex flex-col gap-2">
           <Button handleClick={startGame}>Play</Button>
-          <Button handleClick={openMyCollection}>My Collection</Button>
-          {/* <Button>Setting</Button> */}
+          <Button handleClick={openMyCollection}>Collections</Button>
+          <Button handleClick={openSettings}>Settings</Button>
         </div>
       </div>
+      {settingsOpen && <SettingsPopup onClose={closeSettings} />}
     </div>
   );
 }

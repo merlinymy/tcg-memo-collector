@@ -110,7 +110,6 @@ export function PopupWindow({
       body = <p>You have 100% this set!</p>;
       buttons = (
         <>
-          <Button handleClick={goToCollection}>My Collection</Button>
           <Button handleClick={startEndless}>
             {gameInfo.endlessScore > 0
               ? "Continue Endless Mode"

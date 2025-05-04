@@ -7,6 +7,7 @@ import {
 } from "../utils";
 import { PopupWindow } from "./PopupWindow";
 import AudioManager from "../audio/AudioManager";
+import { TopBar } from "./TopBar";
 
 export function Game({
   collectedCards,
@@ -265,6 +266,7 @@ export function Game({
       className="game-wrap bg-gradient-to-br from-indigo-200 via-sky-100 to-emerald-50
 "
     >
+      <TopBar setPage={setPage}></TopBar>
       {enableTutorial && (
         <div
           className="fixed inset-0 z-100 bg-black/30 backdrop-blur-sm flex justify-center items-center"
@@ -281,7 +283,7 @@ export function Game({
           </div>
         </div>
       )}
-      <div className={`${enableTutorial ? "pointer-events-none" : ""}`}>
+      <div className={`${enableTutorial ? "pointer-events-none" : ""}pb-15`}>
         {popUpWindow}
         {gameState === "playing" && (
           <>

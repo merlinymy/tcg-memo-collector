@@ -11,10 +11,17 @@ export function EntryPage({ setPage }) {
 
   return (
     <div
-      className="flex justify-center items-center h-[100dvh] w-[100dvw]"
+      className="flex flex-col justify-center items-center h-[100dvh] w-[100dvw]"
       onClick={start}
     >
-      <p>click to start</p>
+      <div className="border flex flex-col justify-center items-center p-5 mb-5">
+        <p>Your progress is saved locally in your browser. </p>
+        <p>
+          Clearing your browser data or using a different device/browser will
+          reset your save.
+        </p>
+      </div>
+      <p className="text-2xl">click to start</p>
     </div>
   );
 }

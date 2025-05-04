@@ -58,7 +58,6 @@ export function Card({
   };
   useEffect(() => {
     if (isEnlarge) {
-      console.log("enlarge");
       document.body.style.pointerEvents = "none";
       clickTarget.style.pointerEvents = "all";
       document.body.style.overflow = "hidden";
@@ -80,7 +79,6 @@ export function Card({
         clickTarget.style.transform = "translate(-50%, -50%) rotateY(360deg)";
       }, 0);
     } else if (!isEnlarge && clickTarget) {
-      console.log("shrink");
       const rect = clickTarget.getBoundingClientRect();
       const oldRect = oldPos;
       clickTarget.style.position = "fixed";
@@ -226,7 +224,7 @@ export function Card({
             className="rounded-[5px] bg-[#feffff] h-[100%]  inset-shadow-sm inset-shadow-[grey]"
             onClick={enlarge}
           >
-            <div className="relative transform-3d">
+            <div className="relative">
               <Tilt
                 glareEnable={true}
                 glareMaxOpacity={0.35}

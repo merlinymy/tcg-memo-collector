@@ -3,9 +3,15 @@ import { Title } from "./Title";
 import { useEffect, useState } from "react";
 import AudioManager from "../audio/AudioManager";
 import Tilt from "react-parallax-tilt";
+import { Loading } from "./Loading";
 
 export function StartingPage({ setPage }) {
   const [randomCards, setRandomCards] = useState([]);
+
+  // for loading
+  const [loaded, setLoaded] = useState(0); // <- new
+  const total = randomCards.length || 1;
+  const percent = Math.round((loaded / total) * 100);
 
   const randomSets = async () => {
     async function getOneRandomFromEachCardFile(ids) {
@@ -53,6 +59,9 @@ export function StartingPage({ setPage }) {
 
   return (
     <div className=" h-[100dvh] w-[100dvw] flex flex-col items-center justify-center relative overflow-hidden">
+      {/* LOADING OVERLAY – shows until every image has fired onLoad/onError */}
+      {loaded < total && <Loading percent={percent} />}
+
       {/* Grid of cards */}
       <div className="grid grid-cols-4 touch-none md:grid-cols-6">
         {randomCards.map((card) => {
@@ -62,12 +71,14 @@ export function StartingPage({ setPage }) {
 
           return (
             <Tilt
+              key={card.id}
               className="background-stripes track-on-window"
               perspective={1000}
               glareEnable={true}
               glareMaxOpacity={0.35}
               glarePosition="all"
               // trackOnWindow={true}
+              reset={false}
               tiltReverse={true}
               glareReverse={true}
               glareBorderRadius="20px"
@@ -76,6 +87,8 @@ export function StartingPage({ setPage }) {
                 key={card.id}
                 src={card.images.large}
                 alt={card.name}
+                onLoad={() => setLoaded((c) => c + 1)} // <- new
+                onError={() => setLoaded((c) => c + 1)} // <- count failures too
                 style={{
                   // transform: `scale(${randomScale}) rotateZ(${randomDegZ}deg) rotateY(${randomDegY}deg)`,
                   transition: "transform 0.5s ease",

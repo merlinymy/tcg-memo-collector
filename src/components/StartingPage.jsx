@@ -54,7 +54,7 @@ export function StartingPage({ setPage }) {
   return (
     <div className=" h-[100dvh] w-[100dvw] flex flex-col items-center justify-center relative overflow-hidden">
       {/* Grid of cards */}
-      <div className="grid grid-cols-4 touch-none">
+      <div className="grid grid-cols-4 touch-none md:grid-cols-6">
         {randomCards.map((card) => {
           const randomScale = Math.random() * (maxScale - minScale) + minScale;
           const randomDegZ = Math.random() * 10 - 5;

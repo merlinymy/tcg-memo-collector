@@ -66,8 +66,18 @@ export function Collections({
           </div>
         </div>
       ) : (
-        <div className="collection-wrap relative">
-          {children}
+        <div className="collection-wrap relative m-6">
+          <div className="flex items-baseline ">
+            {children}
+            <img
+              className="set-logo"
+              src={`https://images.pokemontcg.io/${
+                data[0].id.split("-")[0]
+              }/logo.png`}
+              alt={`image for tcg set ${data.name}`}
+            />
+          </div>
+
           <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 m-4">
             {data.map((d) => {
               return (

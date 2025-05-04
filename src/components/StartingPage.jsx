@@ -63,11 +63,13 @@ export function StartingPage({ setPage }) {
           return (
             <Tilt
               className="background-stripes track-on-window"
-              perspective={800}
+              perspective={1000}
               glareEnable={true}
               glareMaxOpacity={0.35}
               glarePosition="all"
-              trackOnWindow={true}
+              // trackOnWindow={true}
+              tiltReverse={true}
+              glareReverse={true}
               glareBorderRadius="20px"
             >
               <img

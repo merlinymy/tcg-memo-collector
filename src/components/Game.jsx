@@ -82,15 +82,15 @@ export function Game({
       clickedCards.length === selectedCards.length &&
       selectedCards.length > 0
     ) {
-      console.log(isInEndless);
-
       if (!isInEndless) {
         setGameState(() => "win");
         setCollectedCards((prev) => ({
           ...prev,
           [selectedSet.id]: [
-            ...prev[selectedSet.id],
-            ...selectedCards.map((card) => card.id),
+            ...new Set([
+              ...prev[selectedSet.id],
+              ...selectedCards.map((card) => card.id),
+            ]),
           ],
         }));
         setGameInfo((prev) => ({

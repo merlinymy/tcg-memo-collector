@@ -116,9 +116,24 @@ export function StartingPage({ setPage }) {
 
       <div className="p-5 btn-wrap w-100 absolute bottom-30 left-1/2 transform -translate-x-1/2 bg-[white]/80">
         <div className="menu-btns flex flex-col gap-2">
-          <Button handleClick={startGame}>Play</Button>
-          <Button handleClick={openMyCollection}>Collections</Button>
-          <Button handleClick={openSettings}>Settings</Button>
+          <Button handleClick={startGame}>
+            <div className="flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">playing_cards</span>
+              Play
+            </div>
+          </Button>
+          <Button handleClick={openMyCollection}>
+            <div className="flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">book_5</span>
+              Collections
+            </div>
+          </Button>
+          <Button handleClick={openSettings}>
+            <div className="flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">settings</span>
+              Settings
+            </div>
+          </Button>
         </div>
       </div>
       {settingsOpen && <SettingsPopup onClose={closeSettings} />}

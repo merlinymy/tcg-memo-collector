@@ -226,7 +226,7 @@ export function Card({
             className="rounded-[5px] bg-[#feffff] h-[100%]  inset-shadow-sm inset-shadow-[grey]"
             onClick={enlarge}
           >
-            <div className="relative">
+            <div className="relative transform-3d">
               <Tilt
                 glareEnable={true}
                 glareMaxOpacity={0.35}
@@ -238,7 +238,7 @@ export function Card({
                 tiltReverse={true}
               >
                 <img
-                  className="card-img rounded-[5px] touch-none"
+                  className="card-img rounded-[5px] touch-none backface-hidden"
                   src={data.images.large}
                   alt={`image for tcg card ${data.name}`}
                   // onClick={enlarge}

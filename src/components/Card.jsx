@@ -52,16 +52,18 @@ export function Card({
     const target = e.target.parentElement.parentElement;
     setIsEnlarge((prev) => !prev);
     setClickTarget(() => target);
+    console.log(target.getBoundingClientRect());
     if (!isEnlarge) {
       setOldPos(() => target.getBoundingClientRect());
     }
   };
   useEffect(() => {
     if (isEnlarge) {
-      document.body.style.pointerEvents = "none";
-      clickTarget.style.pointerEvents = "all";
+      console.log("enlarge");
+
       document.body.style.overflow = "hidden";
       const rect = clickTarget.getBoundingClientRect();
+      console.log(`Top: ${rect.top}px, Left: ${rect.left}px`);
       clickTarget.style.position = "fixed";
       clickTarget.style.top = `${rect.top}px`;
       clickTarget.style.left = `${rect.left}px`;
@@ -79,6 +81,7 @@ export function Card({
         clickTarget.style.transform = "translate(-50%, -50%) rotateY(360deg)";
       }, 0);
     } else if (!isEnlarge && clickTarget) {
+      console.log("shrink");
       const rect = clickTarget.getBoundingClientRect();
       const oldRect = oldPos;
       clickTarget.style.position = "fixed";
@@ -112,7 +115,6 @@ export function Card({
           ].forEach((prop) => clickTarget.style.removeProperty(prop));
           setClickTarget(null);
           document.body.style.overflow = "";
-          document.body.style.pointerEvents = "";
         },
         { once: true }
       );
@@ -224,19 +226,18 @@ export function Card({
             className="rounded-[5px] bg-[#feffff] h-[100%]  inset-shadow-sm inset-shadow-[grey]"
             onClick={enlarge}
           >
-            <div className="relative">
+            <div>
               <Tilt
                 glareEnable={true}
                 glareMaxOpacity={0.35}
                 glareColor="white"
                 glarePosition="all"
                 glareBorderRadius="5px"
-                // scale={2}
+                perspective={2000}
                 transitionSpeed={1500}
-                tiltReverse={true}
               >
                 <img
-                  className="card-img rounded-[5px] touch-none backface-hidden"
+                  className="card-img rounded-[5px] touch-none"
                   src={data.images.large}
                   alt={`image for tcg card ${data.name}`}
                   // onClick={enlarge}

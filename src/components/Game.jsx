@@ -78,7 +78,6 @@ export function Game({
 
   // things to do when player win the round
   useEffect(() => {
-    console.log(clickedCards);
     if (
       clickedCards.length === selectedCards.length &&
       selectedCards.length > 0
@@ -262,7 +261,10 @@ export function Game({
   }
 
   return (
-    <div className="game-wrap">
+    <div
+      className="game-wrap bg-gradient-to-br from-indigo-200 via-sky-100 to-emerald-50
+"
+    >
       {enableTutorial && (
         <div
           className="fixed inset-0 z-100 bg-black/30 backdrop-blur-sm flex justify-center items-center"
@@ -282,26 +284,53 @@ export function Game({
       <div className={`${enableTutorial ? "pointer-events-none" : ""}`}>
         {popUpWindow}
         {gameState === "playing" && (
-          <p className="text-center">
-            {selectedSet.name} - level {gameInfo[selectedSetId]?.curLevel + 1}
-          </p>
-        )}
-        {gameState === "playing" && (
-          <p className="text-center">
-            Cards remaining:{" "}
-            {gameInfo[selectedSetId]?.distribution[
-              gameInfo[selectedSetId]?.curLevel
-            ] - clickedCards.length}
-          </p>
+          <>
+            <p className="text-lg md:text-xl font-semibold text-indigo-700 drop-shadow-[0_1px_0_rgba(255,255,255,0.6)] text-center">
+              {selectedSet.name}&nbsp;– Level&nbsp;
+              <span className="text-emerald-500">
+                {gameInfo[selectedSetId]?.curLevel + 1}
+              </span>
+            </p>
+
+            <p className="text-sm md:text-base text-gray-700 text-center mt-1">
+              Cards remaining:&nbsp;
+              <span className="font-semibold text-emerald-500">
+                {gameInfo[selectedSetId]?.distribution[
+                  gameInfo[selectedSetId]?.curLevel
+                ] - clickedCards.length}
+              </span>
+            </p>
+          </>
         )}
         {(gameState === "endless" || gameState === "endless-restart") && (
-          <div className="endless-wrap">
-            <div className="endless-info-wrap">
-              <p>{selectedSet.name} - Endless Mode</p>
-              <p>Round: {gameInfo[selectedSetId]?.endlessRound}</p>
-            </div>
-            <p>Score: {gameInfo[selectedSetId]?.endlessScore}</p>
-            <p>High Score: {gameInfo[selectedSetId]?.endlessHighScore}</p>
+          <div
+            className="inline-block px-4 py-2 mt-2 rounded-xl bg-white/70 backdrop-blur-sm shadow
+                    text-center space-y-1"
+          >
+            <p className="text-lg md:text-xl font-semibold text-indigo-700">
+              {selectedSet.name}&nbsp;– Endless Mode
+            </p>
+
+            <p className="text-sm md:text-base text-gray-700">
+              Round:&nbsp;
+              <span className="font-semibold text-emerald-500">
+                {gameInfo[selectedSetId]?.endlessRound}
+              </span>
+            </p>
+
+            <p className="text-sm md:text-base text-gray-700">
+              Score:&nbsp;
+              <span className="font-semibold text-emerald-500">
+                {gameInfo[selectedSetId]?.endlessScore}
+              </span>
+            </p>
+
+            <p className="text-sm md:text-base text-gray-700">
+              High&nbsp;Score:&nbsp;
+              <span className="font-semibold text-emerald-500">
+                {gameInfo[selectedSetId]?.endlessHighScore}
+              </span>
+            </p>
           </div>
         )}
         <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">

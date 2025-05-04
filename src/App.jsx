@@ -112,7 +112,7 @@ function App() {
       return null;
   }
   return (
-    <div>
+    <div className="bg-gradient-to-br from-sky-200 via-emerald-100 to-yellow-50">
       {component}
       <SpeedInsights />
       <Analytics />

@@ -73,11 +73,11 @@ export function StartingPage({ setPage }) {
             <Tilt
               key={card.id}
               className="background-stripes track-on-window"
-              perspective={1000}
+              perspective={500}
               glareEnable={true}
               glareMaxOpacity={0.35}
               glarePosition="all"
-              // trackOnWindow={true}
+              trackOnWindow={true}
               reset={false}
               tiltReverse={true}
               glareReverse={true}

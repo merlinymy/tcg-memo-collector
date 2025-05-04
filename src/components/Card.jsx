@@ -126,7 +126,7 @@ export function Card({
     if (percentageCollected <= 0 && prevSetPrecent < 75) {
       return (
         <div
-          className="card p-3 cursor-default pointer-events-none relative bg-[#6d6d6d]"
+          className="card p-3 cursor-default pointer-events-none relative bg-[#6d6d6d] "
           onClick={() => gotoGamePage(data)}
         >
           <div className="flex items-center">
@@ -158,59 +158,121 @@ export function Card({
     }
     return (
       <div
-        className="card p-3 cursor-pointer"
+        className="card p-3 cursor-pointer
+             ring-2 ring-indigo-200 hover:ring-sky-300
+             shadow-lg shadow-black/30
+             transition-transform duration-300
+             hover:-translate-y-1 hover:rotate-1"
         onClick={() => gotoGamePage(data)}
       >
-        <div className="flex items-center">
-          <img className="set-symbol" src={data.images.symbol} alt="set logo" />
-          <p className="text-2xl">{data.name}</p>
+        <div className="flex items-center space-x-2">
+          <img
+            className="set-symbol w-6 h-6"
+            src={data.images.symbol}
+            alt="set logo"
+          />
+          <p
+            className="text-lg md:text-xl font-semibold
+                  text-indigo-700 tracking-wide
+                  drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]"
+          >
+            {data.name}
+          </p>
         </div>
-        <div className="image-container">
+        <div className="image-container relative my-2">
           <img
             className="set-logo"
             src={data.images.logo}
-            alt={`image for tcg set ${data.name}`}
+            alt={`TCG set ${data.name}`}
           />
           <img
-            className="set-logo grey-image"
+            className="set-logo absolute inset-0 opacity-40 grayscale"
             src={data.images.logo}
-            alt={`image for tcg set ${data.name}`}
+            alt=""
             style={greyStyle}
           />
         </div>
 
-        <p>
+        {/* COUNT / PROGRESS */}
+        <p className="text-sm font-medium text-gray-600">
           {cards ? cards.length : 0} / {setLength}
         </p>
-        <p>{percentageCollected}% collected</p>
+
+        {/*
+    Pick a calm highlight hue based on completion %
+    – adjust breakpoints if you prefer different cut‑offs.
+  */}
+        <p
+          className={`text-sm font-semibold ${
+            percentageCollected === 100
+              ? "text-emerald-500"
+              : percentageCollected >= 50
+              ? "text-sky-500"
+              : "text-rose-500"
+          }`}
+        >
+          {percentageCollected}% collected
+        </p>
       </div>
     );
   }
   if (data.total) {
     // render sets
     return (
-      <div className="card p-3 cursor-pointer" onClick={() => openSet(data)}>
-        <div className="flex items-center">
-          <img className="set-symbol" src={data.images.symbol} alt="set logo" />
-          <p className="text-2xl">{data.name}</p>
+      <div
+        className="card p-3 cursor-pointer ring-2 ring-indigo-200 hover:ring-sky-300
+             shadow-lg shadow-black/30
+             transition-transform duration-300
+             hover:-translate-y-1 hover:rotate-1"
+        onClick={() => openSet(data)}
+      >
+        <div className="flex items-center space-x-2">
+          <img
+            className="set-symbol w-6 h-6"
+            src={data.images.symbol}
+            alt="set logo"
+          />
+          <p
+            className="text-lg md:text-xl font-semibold
+                  text-indigo-700 tracking-wide
+                  drop-shadow-[0_1px_0_rgba(255,255,255,0.6)]"
+          >
+            {data.name}
+          </p>
         </div>
-        <div className="image-container">
+        <div className="image-container relative my-2">
           <img
             className="set-logo"
             src={data.images.logo}
-            alt={`image for tcg set ${data.name}`}
+            alt={`TCG set ${data.name}`}
           />
           <img
-            className="set-logo grey-image"
+            className="set-logo absolute inset-0 opacity-40 grayscale"
             src={data.images.logo}
-            alt={`image for tcg set ${data.name}`}
+            alt=""
             style={greyStyle}
           />
         </div>
-        <p>
+        {/* COUNT / PROGRESS */}
+        <p className="text-sm font-medium text-gray-600">
           {cards ? cards.length : 0} / {setLength}
         </p>
-        <p>{percentageCollected}% collected</p>
+
+        {/*
+    Pick a calm highlight hue based on completion %
+    – adjust breakpoints if you prefer different cut‑offs.
+  */}
+        <p
+          className={`text-sm font-semibold ${
+            percentageCollected === 100
+              ? "text-emerald-500"
+              : percentageCollected >= 50
+              ? "text-sky-500"
+              : "text-rose-500"
+          }`}
+        >
+          {percentageCollected}% collected
+        </p>
       </div>
     );
   } else {

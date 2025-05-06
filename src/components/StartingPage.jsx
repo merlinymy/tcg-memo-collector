@@ -37,7 +37,7 @@ export function StartingPage({ setPage }) {
     const sets = await fetch("/data/sets.json");
     const data = await sets.json();
     const shuffled = [...data].sort(() => 0.5 - Math.random());
-    const setIds = shuffled.slice(0, 40).map((ele) => ele.id);
+    const setIds = shuffled.slice(0, 20).map((ele) => ele.id);
 
     const cards = await getOneRandomFromEachCardFile(setIds);
     setRandomCards(cards);

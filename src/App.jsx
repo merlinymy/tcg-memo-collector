@@ -32,6 +32,7 @@ function App() {
   AudioManager.registerBgm("battle2", "/audio/battleNormal.mp3", 0.5);
   AudioManager.registerBgm("battle3", "/audio/battlePinch.mp3", 0.5);
   AudioManager.registerBgm("battleResult", "/audio/battleResult.mp3", 0.5);
+  AudioManager.registerBgm("battleWin", "/audio/battleWin.mp3", 0.5);
 
   AudioManager.registerSfx("gameWin", "/audio/gamewin.mp3", 0.5);
   AudioManager.registerSfx("gameLose", "/audio/gamelose.mp3", 0.5);

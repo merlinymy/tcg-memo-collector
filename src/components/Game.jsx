@@ -286,7 +286,7 @@ export function Game({
       <div
         className={`${
           enableTutorial ? "pointer-events-none" : ""
-        }pb-15 h-[100dvh]`}
+        }pb-15 min-h-[100dvh]`}
       >
         {popUpWindow}
         {gameState === "playing" && (

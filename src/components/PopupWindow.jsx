@@ -22,12 +22,14 @@ export function PopupWindow({
   endlessLevel = 1,
   gameInfo = { endlessScore: 0 },
 }) {
-  useEffect(() => {
-    AudioManager.playBgm("battleResult");
-  }, []);
-
   const resetClicks = () => setClickedCards([]);
-
+  useEffect(() => {
+    if (type === "win") {
+      AudioManager.playBgm("battleWin");
+    } else {
+      AudioManager.playBgm("battleResult");
+    }
+  }, [type]);
   const backToMenu = () => {
     setPage("starting");
     resetClicks();

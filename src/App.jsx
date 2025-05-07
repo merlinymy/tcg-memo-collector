@@ -24,21 +24,21 @@ function App() {
     () => localCollectedCards
   );
 
-  AudioManager.registerBgm("menu", "/audio/pocketMenu.mp3", 0.5);
-  AudioManager.registerBgm("battleMenu", "/audio/battleMenu.mp3", 0.5);
-  AudioManager.registerBgm("collection", "/audio/collection.mp3", 0.5);
+  AudioManager.registerBgm("menu", "/audio/pocketMenu.mp3", 0.25);
+  AudioManager.registerBgm("battleMenu", "/audio/battleMenu.mp3", 0.25);
+  AudioManager.registerBgm("collection", "/audio/collection.mp3", 0.25);
 
-  AudioManager.registerBgm("battle1", "/audio/battleChance.mp3", 0.5);
-  AudioManager.registerBgm("battle2", "/audio/battleNormal.mp3", 0.5);
-  AudioManager.registerBgm("battle3", "/audio/battlePinch.mp3", 0.5);
-  AudioManager.registerBgm("battleResult", "/audio/battleResult.mp3", 0.5);
-  AudioManager.registerBgm("battleWin", "/audio/battleWin.mp3", 0.5);
+  AudioManager.registerBgm("battle1", "/audio/battleChance.mp3", 0.25);
+  AudioManager.registerBgm("battle2", "/audio/battleNormal.mp3", 0.25);
+  AudioManager.registerBgm("battle3", "/audio/battlePinch.mp3", 0.25);
+  AudioManager.registerBgm("battleResult", "/audio/battleResult.mp3", 0.25);
+  AudioManager.registerBgm("battleWin", "/audio/battleWin.mp3", 0.25);
 
-  AudioManager.registerSfx("gameWin", "/audio/gamewin.mp3", 0.5);
-  AudioManager.registerSfx("gameLose", "/audio/gamelose.mp3", 0.5);
+  AudioManager.registerSfx("gameWin", "/audio/gamewin.mp3", 0.25);
+  AudioManager.registerSfx("gameLose", "/audio/gamelose.mp3", 0.25);
 
-  AudioManager.registerSfx("click", "/audio/menuClick.mp3", 0.5);
-  AudioManager.registerSfx("flip", "/audio/cardFlip.mp3", 0.5);
+  AudioManager.registerSfx("click", "/audio/menuClick.mp3", 0.25);
+  AudioManager.registerSfx("flip", "/audio/cardFlip.mp3", 0.25);
 
   let component;
   switch (page) {

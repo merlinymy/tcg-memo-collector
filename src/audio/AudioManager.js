@@ -7,6 +7,8 @@ class AudioManager {
     this.sfx = {};
     this.currentKey = null;
     this.currentId = null;
+    this.bgmVolume = 0.25;
+    this.sfxVolume = 0.25;
   }
 
   // only ever create one Howl per key

@@ -118,19 +118,19 @@ export function StartingPage({ setPage }) {
         <div className="menu-btns flex flex-col gap-2">
           <Button handleClick={startGame}>
             <div className="flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">playing_cards</span>
+              <span className="material-symbols-outlined">playing_cards</span>
               Play
             </div>
           </Button>
           <Button handleClick={openMyCollection}>
             <div className="flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">book_5</span>
+              <span className="material-symbols-outlined">book_5</span>
               Collections
             </div>
           </Button>
           <Button handleClick={openSettings}>
             <div className="flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">settings</span>
+              <span className="material-symbols-outlined">settings</span>
               Settings
             </div>
           </Button>

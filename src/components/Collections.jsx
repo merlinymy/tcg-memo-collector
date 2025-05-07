@@ -55,7 +55,7 @@ export function Collections({
           />
           <p
             className="relative z-10
-               mt-6 mb-4
+               pt-6 mb-4
                text-center text-3xl md:text-4xl
                font-bold uppercase tracking-widest
                text-amber-500
@@ -119,7 +119,7 @@ export function Collections({
       )
     ) : (
       <div
-        className="relative min-h-screen
+        className="relative h-[100dvh]
                 bg-gradient-to-br from-indigo-200 via-sky-100 to-emerald-50
       pb-24 overflow-hidden"
       >

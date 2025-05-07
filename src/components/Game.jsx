@@ -283,7 +283,11 @@ export function Game({
           </div>
         </div>
       )}
-      <div className={`${enableTutorial ? "pointer-events-none" : ""}pb-15`}>
+      <div
+        className={`${
+          enableTutorial ? "pointer-events-none" : ""
+        }pb-15 h-[100dvh]`}
+      >
         {popUpWindow}
         {gameState === "playing" && (
           <>
@@ -335,7 +339,7 @@ export function Game({
             </p>
           </div>
         )}
-        <div className="grid grid-cols-2 my-3.5 mx-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
+        <div className="grid grid-cols-2 py-3.5 px-5 gap-3.5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
           {selectedCards.map((card) => (
             <InGameCard
               key={card.id}

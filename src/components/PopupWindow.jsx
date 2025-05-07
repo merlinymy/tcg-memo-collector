@@ -24,7 +24,7 @@ export function PopupWindow({
 }) {
   useEffect(() => {
     AudioManager.playBgm("battleResult");
-  });
+  }, []);
 
   const resetClicks = () => setClickedCards([]);
 

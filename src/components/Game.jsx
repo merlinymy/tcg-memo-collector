@@ -39,8 +39,14 @@ export function Game({
   };
 
   useEffect(() => {
-    const musicArr = ["battle1", "battle2", "battle3"];
-    AudioManager.playBgm(musicArr[Math.floor(Math.random() * 3)]);
+    if (gameState === "playing") {
+      const musicArr = ["battle1", "battle2", "battle3"];
+      AudioManager.playBgm(musicArr[Math.floor(Math.random() * 3)]);
+    } else if (gameState === "win") {
+      AudioManager.playBgm("battleWin");
+    } else {
+      AudioManager.playBgm("battleResult");
+    }
   }, [curLevel, gameState]);
 
   useEffect(() => {

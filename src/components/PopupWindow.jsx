@@ -23,13 +23,13 @@ export function PopupWindow({
   gameInfo = { endlessScore: 0 },
 }) {
   const resetClicks = () => setClickedCards([]);
-  useEffect(() => {
-    if (type === "win") {
-      AudioManager.playBgm("battleWin");
-    } else {
-      AudioManager.playBgm("battleResult");
-    }
-  }, [type]);
+  // useEffect(() => {
+  //   if (type === "win") {
+  //     AudioManager.playBgm("battleWin");
+  //   } else {
+  //     AudioManager.playBgm("battleResult");
+  //   }
+  // }, [type]);
   const backToMenu = () => {
     setPage("starting");
     resetClicks();

@@ -49,10 +49,11 @@ export function Collections({
         <div className="relative ">
           <div
             className="fixed inset-0 pointer-events-none
-                  [background-image:url('../src/assets/img/pokeballBg.svg')]
-                  bg-cover
-                  opacity-10 mix-blend-mutply"
-          />
+             bg-[url('/pokeballBg.svg')]
+             bg-cover
+             opacity-10
+             mix-blend-multiply"
+          ></div>
           <p
             className="relative z-10
                pt-6 mb-4

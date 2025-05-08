@@ -46,7 +46,7 @@ export function Game({
     ) {
       const musicArr = ["battle1", "battle2", "battle3"];
       AudioManager.playBgm(musicArr[Math.floor(Math.random() * 3)]);
-    } else if (gameState === "win") {
+    } else if (gameState === "win" || gameState === "setCollected") {
       AudioManager.playBgm("battleWin");
     } else {
       AudioManager.playBgm("battleResult");

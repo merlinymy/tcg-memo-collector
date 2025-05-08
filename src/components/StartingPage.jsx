@@ -84,7 +84,7 @@ export function StartingPage({ setPage }) {
               key={card.id}
               className="background-stripes track-on-window"
               perspective={500}
-              glareEnable={true}
+              glareEnable={false}
               glareMaxOpacity={0.35}
               glarePosition="all"
               trackOnWindow={true}

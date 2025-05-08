@@ -49,7 +49,7 @@ export function Collections({
         <div className="relative ">
           <div
             className="fixed inset-0 pointer-events-none
-                  [background-image:url('../src/assets/img/pokeball-bg.svg')]
+                  [background-image:url('../src/assets/img/pokeballBg.svg')]
                   bg-cover
                   opacity-10 mix-blend-mutply"
           />
@@ -119,9 +119,9 @@ export function Collections({
       )
     ) : (
       <div
-        className="relative h-[100dvh]
+        className="relative h-[100dvh] overflow-scroll
                 bg-gradient-to-br from-indigo-200 via-sky-100 to-emerald-50
-      pb-24 overflow-hidden"
+      pb-24"
       >
         <p
           className="relative z-10
